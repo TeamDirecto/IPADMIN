@@ -225,9 +225,12 @@ button { cursor: pointer; }
 .btn-ghost { color: #536684; background: #fff; border-color: #d6dfeb; }
 .btn-success { color: #fff; background: linear-gradient(180deg, #249557, #167a46); }
 .btn-danger { color: #fff; background: linear-gradient(180deg, #df4242, #c92f2f); }
+.btn-reject { color: #9d4513; background: #fff4e8; border-color: #f0c9a6; }
+.btn-reject:hover { background: #ffe9d4; border-color: #e8b98f; }
 .btn-sm { min-height: 30px; min-width: 82px; padding: 0 12px; font-size: 11px; border-radius: 6px; }
 .btn-block { width: 100%; margin-top: 20px; min-height: 44px; }
 .btn:disabled { opacity: .45; cursor: default; box-shadow: none; }
+.action-group { display: flex; align-items: center; gap: 6px; }
 
 /* Tables */
 .table-wrap { width: 100%; overflow-x: auto; }
@@ -273,6 +276,7 @@ tbody tr:hover td { background: #fbfdff; }
 .badge-active { color: #167944; background: var(--green-soft); }
 .badge-revoked,
 .badge-error { color: #be3030; background: var(--red-soft); }
+.badge-rejected { color: #a44d16; background: #fff0e2; }
 .badge-expired { color: var(--orange); background: var(--orange-soft); }
 .badge-expiring,
 .badge-revoking { color: #a66d08; background: #fff2cf; }
