@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <title>VICIdial IP Manager | Administración</title>
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin.css?v=2">
 </head>
 <body>
   <div id="loginView" class="login-shell">
@@ -64,7 +64,7 @@
           <div>
             <div id="metricPending" class="metric-number">0</div>
             <div class="metric-label">Solicitudes pendientes</div>
-            <div class="metric-help">Requieren aprobación</div>
+            <div class="metric-help">Requieren revisión</div>
           </div>
         </article>
 
@@ -100,7 +100,7 @@
         <div class="panel-header pending-header">
           <div>
             <h2>Solicitudes pendientes</h2>
-            <p>Solicitudes de acceso IP que requieren revisión y aprobación.</p>
+            <p>Solicitudes de acceso IP que requieren revisión, aprobación o rechazo.</p>
           </div>
 
           <div class="bulk-controls">
@@ -177,7 +177,7 @@
         <div class="panel-header toolbar-header">
           <div>
             <h2>Historial</h2>
-            <p>Registro de solicitudes y cambios de estado.</p>
+            <p>Registro de todas las solicitudes y cambios de estado.</p>
           </div>
           <div class="table-tools">
             <input id="historySearch" class="search-input" type="search" placeholder="Buscar por IP, centro, nodo, estado o usuario...">
@@ -196,7 +196,7 @@
                 <th>Vence</th>
                 <th>Estado</th>
                 <th>Aprobado por</th>
-                <th>Revocado por</th>
+                <th>Finalizado por</th>
                 <th>Fecha</th>
               </tr>
             </thead>
@@ -214,6 +214,6 @@
     <div id="toastHost" class="toast-host" aria-live="polite"></div>
   </div>
 
-  <script src="js/admin.js"></script>
+  <script src="js/admin.js?v=2"></script>
 </body>
 </html>
