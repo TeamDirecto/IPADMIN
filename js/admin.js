@@ -72,6 +72,7 @@
       ACTIVE: ["Activa", "active"],
       REVOKING: ["Revocando", "revoking"],
       REVOKED: ["Revocada", "revoked"],
+      REJECTED: ["Rechazada", "rejected"],
       EXPIRING: ["Expirando", "expiring"],
       EXPIRED: ["Expirada", "expired"],
       ERROR: ["Error", "error"]
@@ -91,6 +92,7 @@
 
   function historyDate(row) {
     return formatDate(
+      row.rejected_at ||
       row.expired_at ||
       row.revoked_at ||
       row.approved_at ||
@@ -98,8 +100,9 @@
     );
   }
 
-  function historyRevokedBy(row) {
+  function historyFinalizedBy(row) {
     const status = String(row.status || "").toUpperCase();
+    if (status === "REJECTED") return text(row.rejected_by);
     if (status === "EXPIRED" || status === "EXPIRING") return "AUTOMÁTICO";
     return text(row.revoked_by);
   }
@@ -116,7 +119,9 @@
       statusInfo(row.status)[0],
       row.approved_by,
       row.revoked_by,
+      row.rejected_by,
       row.expires_at,
+      row.rejected_at,
       row.created_at
     ].join(" ").toLowerCase();
   }
@@ -247,7 +252,12 @@
         <td>${escapeHtml(nodeLabel(row.node_name))}</td>
         <td>${statusBadge(row.status)}</td>
         <td>${escapeHtml(formatDate(row.created_at))}</td>
-        <td><button class="btn btn-success btn-sm approve-one" data-id="${escapeHtml(row.id)}">Aprobar</button></td>
+        <td>
+          <div class="action-group">
+            <button class="btn btn-success btn-sm approve-one" data-id="${escapeHtml(row.id)}">Aprobar</button>
+            <button class="btn btn-reject btn-sm reject-one" data-id="${escapeHtml(row.id)}" data-ip="${escapeHtml(text(row.ip))}">Rechazar</button>
+          </div>
+        </td>
       </tr>
     `).join("") : rowEmpty(9, "No hay solicitudes pendientes.");
 
@@ -261,6 +271,9 @@
     });
     document.querySelectorAll(".approve-one").forEach((button) => {
       button.addEventListener("click", () => approveIds([button.dataset.id]));
+    });
+    document.querySelectorAll(".reject-one").forEach((button) => {
+      button.addEventListener("click", () => rejectId(button.dataset.id, button.dataset.ip));
     });
   }
 
@@ -331,7 +344,7 @@
   }
 
   function renderHistory() {
-    const historyStatuses = new Set(["APPLYING", "REVOKING", "REVOKED", "EXPIRING", "EXPIRED", "ERROR"]);
+    const historyStatuses = new Set(["APPLYING", "REVOKING", "REVOKED", "REJECTED", "EXPIRING", "EXPIRED", "ERROR"]);
     const rows = filterRows(
       allRows.filter((row) => historyStatuses.has(String(row.status || "").toUpperCase())),
       historySearch.value
@@ -351,7 +364,7 @@
         <td>${escapeHtml(formatDate(row.expires_at))}</td>
         <td>${statusBadge(row.status)}</td>
         <td>${escapeHtml(text(row.approved_by))}</td>
-        <td>${escapeHtml(historyRevokedBy(row))}</td>
+        <td>${escapeHtml(historyFinalizedBy(row))}</td>
         <td>${escapeHtml(historyDate(row))}</td>
       </tr>
     `).join("") : rowEmpty(10, "No hay registros que coincidan con la búsqueda.");
@@ -427,6 +440,18 @@
     if (approved) toast(`${approved} solicitud(es) aprobada(s).`);
     if (failures.length) toast(failures.join(" | "), "error");
     await loadRequests();
+  }
+
+  async function rejectId(id, ip) {
+    if (!confirm(`¿Rechazar la solicitud #${id} para la IP ${ip}?\n\nLa solicitud saldrá de Pendientes y quedará registrada en Historial.`)) return;
+
+    try {
+      await api(`/requests/${encodeURIComponent(id)}/reject`, { method: "POST" });
+      toast(`Solicitud #${id} rechazada.`);
+      await loadRequests();
+    } catch (error) {
+      toast(error.message, "error");
+    }
   }
 
   async function revokeId(id) {
