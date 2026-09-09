@@ -1,11 +1,15 @@
 (() => {
   "use strict";
 
+  const API = "https://vicidial97.directo.com/ip-manager-webadmin-api";
+  const REFRESH_MS = 30000;
+  const DEFAULT_STALE_AFTER = 180;
+  const EVENTS_LIMIT = 200;
+
   const $ = (id) => document.getElementById(id);
 
-  let healthRows = [];
-  let staleAfter = 180;
-  let events = [];
+  let loading = false;
+  let timer = null;
 
   const nodeLabels = {
     vicidial43: "VICIDIAL 43",
@@ -26,6 +30,22 @@
     return nodeLabels[value] || String(value || "-");
   }
 
+  function parseDate(value) {
+    if (!value) return NaN;
+    const raw = String(value).trim();
+    const normalized = raw.includes("T") ? raw : raw.replace(" ", "T");
+    return new Date(normalized).getTime();
+  }
+
+  function rowAge(row) {
+    const backendAge = Number(row.age_seconds);
+    if (Number.isFinite(backendAge) && backendAge >= 0) return backendAge;
+
+    const ts = parseDate(row.last_seen);
+    if (!Number.isFinite(ts)) return null;
+    return Math.max(0, Math.floor((Date.now() - ts) / 1000));
+  }
+
   function ageLabel(seconds) {
     const value = Number(seconds);
     if (!Number.isFinite(value) || value < 0) return "-";
@@ -36,10 +56,7 @@
   }
 
   function parseEventTime(value) {
-    if (!value) return NaN;
-    const raw = String(value).trim();
-    const normalized = raw.includes("T") ? raw : raw.replace(" ", "T");
-    return new Date(normalized).getTime();
+    return parseDate(value);
   }
 
   function setCard(id, value, help, state = "") {
@@ -56,18 +73,22 @@
     if (state) card.classList.add(state);
   }
 
-  function renderHealthSummary() {
-    const total = healthRows.length;
+  function renderHealthSummary(rows, staleAfter) {
+    const total = rows.length;
 
-    const online = healthRows.filter((row) => {
-      const age = Number(row._age);
-      return Number.isFinite(age) && age <= staleAfter;
-    }).length;
+    const enriched = rows.map((row) => ({
+      ...row,
+      _age: rowAge(row),
+      _state: String(row.state || "UNKNOWN").toUpperCase()
+    }));
 
-    const unhealthy = healthRows.filter((row) => {
-      const state = String(row._state || "").toUpperCase();
-      return state === "DRIFT" || state === "STALE";
-    }).length;
+    const online = enriched.filter((row) =>
+      row._age !== null && Number(row._age) <= staleAfter
+    ).length;
+
+    const unhealthy = enriched.filter((row) =>
+      row._state === "DRIFT" || row._state === "STALE"
+    ).length;
 
     setCard(
       "summaryOnline",
@@ -80,7 +101,7 @@
       total && online === total && unhealthy === 0 ? "ok" : total ? "warn" : ""
     );
 
-    const withAge = healthRows.filter((row) => Number.isFinite(Number(row._age)));
+    const withAge = enriched.filter((row) => Number.isFinite(Number(row._age)));
 
     if (!withAge.length) {
       setCard("summaryOldestHeartbeat", "-", "Sin telemetría disponible");
@@ -92,7 +113,11 @@
     );
 
     const age = Number(oldest._age);
-    const state = age > staleAfter ? "error" : age > Math.floor(staleAfter * 0.66) ? "warn" : "ok";
+    const state = age > staleAfter
+      ? "error"
+      : age > Math.floor(staleAfter * 0.66)
+        ? "warn"
+        : "ok";
 
     setCard(
       "summaryOldestHeartbeat",
@@ -102,7 +127,7 @@
     );
   }
 
-  function renderEventSummary() {
+  function renderEventSummary(events) {
     const now = Date.now();
     const dayMs = 24 * 60 * 60 * 1000;
 
@@ -132,16 +157,86 @@
     );
   }
 
-  window.addEventListener("ipm:health", (event) => {
-    const detail = event.detail || {};
-    healthRows = Array.isArray(detail.rows) ? detail.rows : [];
-    staleAfter = Number(detail.staleAfter) > 0 ? Number(detail.staleAfter) : 180;
-    renderHealthSummary();
-  });
+  function renderUnavailable() {
+    setCard("summaryOnline", "-", "Telemetría no disponible");
+    setCard("summaryOldestHeartbeat", "-", "Telemetría no disponible");
+    setCard("summaryErrors", "-", "Actividad no disponible");
+    setCard("summaryPending", "-", "Actividad no disponible");
+  }
 
-  window.addEventListener("ipm:events", (event) => {
-    const detail = event.detail || {};
-    events = Array.isArray(detail.events) ? detail.events : [];
-    renderEventSummary();
-  });
+  async function loadSummary() {
+    if (loading) return;
+
+    const token = sessionStorage.getItem("ipadmin_token") || "";
+    const app = $("appView");
+
+    if (!token || !app || app.hidden) return;
+
+    loading = true;
+
+    try {
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const [healthResponse, eventsResponse] = await Promise.all([
+        fetch(`${API}/nodes/health`, {
+          method: "GET",
+          cache: "no-store",
+          headers
+        }),
+        fetch(`${API}/nodes/events?limit=${EVENTS_LIMIT}`, {
+          method: "GET",
+          cache: "no-store",
+          headers
+        })
+      ]);
+
+      let healthPayload = null;
+      let eventsPayload = null;
+
+      try { healthPayload = await healthResponse.json(); } catch (_) { healthPayload = null; }
+      try { eventsPayload = await eventsResponse.json(); } catch (_) { eventsPayload = null; }
+
+      if (!healthResponse.ok || !eventsResponse.ok) {
+        throw new Error(
+          healthPayload?.detail || eventsPayload?.detail ||
+          `HTTP ${healthResponse.status}/${eventsResponse.status}`
+        );
+      }
+
+      const rows = Array.isArray(healthPayload)
+        ? healthPayload
+        : Array.isArray(healthPayload?.nodes)
+          ? healthPayload.nodes
+          : [];
+
+      const staleAfter = Number(healthPayload?.stale_after_seconds) > 0
+        ? Number(healthPayload.stale_after_seconds)
+        : DEFAULT_STALE_AFTER;
+
+      const events = Array.isArray(eventsPayload?.events)
+        ? eventsPayload.events
+        : [];
+
+      renderHealthSummary(rows, staleAfter);
+      renderEventSummary(events);
+    } catch (_) {
+      renderUnavailable();
+    } finally {
+      loading = false;
+    }
+  }
+
+  const refresh = $("refreshButton");
+  if (refresh) refresh.addEventListener("click", loadSummary);
+
+  const app = $("appView");
+  if (app && window.MutationObserver) {
+    const observer = new MutationObserver(() => {
+      if (!app.hidden) loadSummary();
+    });
+    observer.observe(app, { attributes: true, attributeFilter: ["hidden"] });
+  }
+
+  timer = setInterval(loadSummary, REFRESH_MS);
+  loadSummary();
 })();
