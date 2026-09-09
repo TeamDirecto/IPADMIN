@@ -3,9 +3,13 @@
 
   const API = "https://vicidial97.directo.com/ip-manager-webadmin-api";
   const REFRESH_MS = 30000;
+  const PAGE_SIZE = 5;
+  const FETCH_LIMIT = 200;
 
   let loading = false;
   let timer = null;
+  let eventPage = 1;
+  let allEvents = [];
 
   const $ = (id) => document.getElementById(id);
 
@@ -88,17 +92,59 @@
     return [a || "EVENTO", "add"];
   }
 
-  function renderEvents(items) {
+  function renderPager(host, totalItems, page, onPage) {
+    if (!host) return;
+
+    host.innerHTML = "";
+
+    const pages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+    const current = Math.min(Math.max(1, page), pages);
+
+    if (totalItems <= PAGE_SIZE) return;
+
+    const make = (label, target, active = false, disabled = false) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `page-button${active ? " active" : ""}`;
+      button.textContent = label;
+      button.disabled = disabled;
+      button.addEventListener("click", () => onPage(target));
+      host.appendChild(button);
+    };
+
+    make("‹", current - 1, false, current === 1);
+
+    let start = Math.max(1, current - 2);
+    let end = Math.min(pages, start + 4);
+    start = Math.max(1, end - 4);
+
+    for (let p = start; p <= end; p++) {
+      make(String(p), p, p === current);
+    }
+
+    make("›", current + 1, false, current === pages);
+  }
+
+  function renderEvents() {
     const body = $("eventBody");
+    const pager = $("eventPager");
     if (!body) return;
 
-    if (!items.length) {
+    const total = allEvents.length;
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    eventPage = Math.min(Math.max(1, eventPage), pages);
+
+    if (!total) {
       body.innerHTML = '<tr class="empty-row"><td colspan="8">No hay actividad reciente registrada.</td></tr>';
       $("eventCountText").textContent = "0 eventos";
+      if (pager) pager.innerHTML = "";
       return;
     }
 
-    body.innerHTML = items.map((item) => {
+    const start = (eventPage - 1) * PAGE_SIZE;
+    const pageItems = allEvents.slice(start, start + PAGE_SIZE);
+
+    body.innerHTML = pageItems.map((item) => {
       const [typeLabel, typeClass] = eventType(item.action, item.status);
       const status = String(item.status || "-").toUpperCase();
       const statusClass = status === "ERROR" ? "error" : status === "COMPLETED" ? "completed" : "";
@@ -118,14 +164,25 @@
       `;
     }).join("");
 
-    $("eventCountText").textContent = `${items.length} evento${items.length === 1 ? "" : "s"}`;
+    const shownFrom = start + 1;
+    const shownTo = Math.min(start + PAGE_SIZE, total);
+
+    $("eventCountText").textContent = `Mostrando ${shownFrom}–${shownTo} de ${total}`;
+
+    renderPager(pager, total, eventPage, (page) => {
+      eventPage = page;
+      renderEvents();
+    });
   }
 
   function renderError(message) {
     const incidents = $("incidentList");
     const body = $("eventBody");
+    const pager = $("eventPager");
+
     if (incidents) incidents.innerHTML = `<div class="incident-empty health-error">${esc(message)}</div>`;
     if (body) body.innerHTML = `<tr class="empty-row"><td colspan="8" class="health-error">${esc(message)}</td></tr>`;
+    if (pager) pager.innerHTML = "";
   }
 
   async function loadEvents() {
@@ -138,7 +195,7 @@
     loading = true;
 
     try {
-      const response = await fetch(`${API}/nodes/events?limit=50`, {
+      const response = await fetch(`${API}/nodes/events?limit=${FETCH_LIMIT}`, {
         method: "GET",
         cache: "no-store",
         headers: { Authorization: `Bearer ${token}` }
@@ -152,7 +209,8 @@
       }
 
       renderIncidents(Array.isArray(payload?.incidents) ? payload.incidents : []);
-      renderEvents(Array.isArray(payload?.events) ? payload.events : []);
+      allEvents = Array.isArray(payload?.events) ? payload.events : [];
+      renderEvents();
 
       const updated = $("eventsUpdatedText");
       if (updated) updated.textContent = `Actualizado ${new Date().toLocaleTimeString("es-MX")}`;
