@@ -7,7 +7,7 @@
   <title>VICIdial IP Manager | Diagnóstico</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
   <link rel="stylesheet" href="css/health.css?v=2">
-  <link rel="stylesheet" href="css/events.css?v=1">
+  <link rel="stylesheet" href="css/events.css?v=2">
 </head>
 <body>
   <div id="appView" class="app-shell" hidden>
@@ -127,6 +127,39 @@
             <span id="eventsUpdatedText">Esperando datos...</span>
           </div>
         </section>
+
+        <section class="panel" id="stateHistoryPanel">
+          <div class="panel-header toolbar-header">
+            <div>
+              <h2>Historial de estado</h2>
+              <p>Transiciones reales detectadas por el monitor central: SYNCED, DRIFT y STALE. El estado inicial se conserva como línea base y no se registra como incidencia.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Detectado</th>
+                  <th>Nodo</th>
+                  <th>Transición</th>
+                  <th>Diagnóstico</th>
+                  <th>Deseado / Aplicado</th>
+                  <th>Firewall</th>
+                  <th>Último heartbeat</th>
+                </tr>
+              </thead>
+              <tbody id="stateHistoryBody">
+                <tr class="empty-row"><td colspan="7">Consultando historial de estado...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-footer pagination-footer">
+            <span id="stateHistoryCount">0 transiciones</span>
+            <span id="stateHistoryUpdated">Esperando datos...</span>
+          </div>
+        </section>
       </div>
     </main>
 
@@ -189,5 +222,6 @@
   <script src="js/diagnostico.js?v=1"></script>
   <script src="js/health.js?v=2"></script>
   <script src="js/events.js?v=1"></script>
+  <script src="js/state-history.js?v=1"></script>
 </body>
 </html>
