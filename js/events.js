@@ -56,12 +56,22 @@
     const host = $("incidentList");
     if (!host) return;
 
+    const activeMaintenance = window.IPMMaintenance?.currentWindow?.();
     const drift = items.filter((x) => String(x.state).toUpperCase() === "DRIFT").length;
     const stale = items.filter((x) => String(x.state).toUpperCase() === "STALE").length;
 
     $("incidentTotal").textContent = items.length;
     $("incidentDrift").textContent = drift;
     $("incidentStale").textContent = stale;
+
+    if (activeMaintenance && items.length && drift === 0 && stale === items.length) {
+      host.innerHTML = `
+        <div class="maintenance-api-note">
+          ${esc(activeMaintenance.label)}. Los estados STALE observados durante esta ventana se consideran esperados y no se clasifican como incidencia inesperada.
+        </div>
+      `;
+      return;
+    }
 
     if (!items.length) {
       host.innerHTML = '<div class="incident-empty">Sin incidencias activas. Los nodos reportan estado saludable.</div>';
@@ -175,10 +185,32 @@
     });
   }
 
+  function emitEvents(incidents) {
+    window.dispatchEvent(new CustomEvent("ipm:events", {
+      detail: {
+        events: allEvents.slice(),
+        incidents: Array.isArray(incidents) ? incidents.slice() : []
+      }
+    }));
+  }
+
   function renderError(message) {
     const incidents = $("incidentList");
     const body = $("eventBody");
     const pager = $("eventPager");
+    const active = window.IPMMaintenance?.currentWindow?.();
+
+    if (active) {
+      const note = `
+        <div class="maintenance-api-note">
+          Ventana programada activa: ${esc(active.label)}. La API puede no responder mientras Apache está detenido; esta indisponibilidad se considera esperada.
+        </div>
+      `;
+      if (incidents) incidents.innerHTML = note;
+      if (body) body.innerHTML = `<tr class="empty-row"><td colspan="8">${note}</td></tr>`;
+      if (pager) pager.innerHTML = "";
+      return;
+    }
 
     if (incidents) incidents.innerHTML = `<div class="incident-empty health-error">${esc(message)}</div>`;
     if (body) body.innerHTML = `<tr class="empty-row"><td colspan="8" class="health-error">${esc(message)}</td></tr>`;
@@ -208,9 +240,11 @@
         throw new Error(payload?.detail || `HTTP ${response.status}`);
       }
 
-      renderIncidents(Array.isArray(payload?.incidents) ? payload.incidents : []);
+      const incidents = Array.isArray(payload?.incidents) ? payload.incidents : [];
+      renderIncidents(incidents);
       allEvents = Array.isArray(payload?.events) ? payload.events : [];
       renderEvents();
+      emitEvents(incidents);
 
       const updated = $("eventsUpdatedText");
       if (updated) updated.textContent = `Actualizado ${new Date().toLocaleTimeString("es-MX")}`;
