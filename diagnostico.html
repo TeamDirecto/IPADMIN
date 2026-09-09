@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>VICIdial IP Manager | Diagnóstico</title>
+  <link rel="stylesheet" href="css/admin.css?v=2">
+  <link rel="stylesheet" href="css/health.css?v=1">
+</head>
+<body>
+  <div id="appView" class="app-shell" hidden>
+    <header class="topbar">
+      <div class="brand-group">
+        <div class="brand-title">VICIdial IP Manager</div>
+        <div class="brand-divider"></div>
+        <div class="brand-subtitle">Diagnóstico de infraestructura</div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="session-user">
+          <span class="avatar">IP</span>
+          <div>
+            <strong id="sessionUser">IPADMIN</strong>
+            <small>Administrador</small>
+          </div>
+        </div>
+
+        <button id="backButton" class="btn btn-ghost" type="button">Solicitudes</button>
+        <button id="refreshButton" class="btn btn-secondary" type="button">Actualizar</button>
+        <button id="logoutButton" class="btn btn-ghost" type="button">Salir</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="panel" id="nodeHealthPanel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>Salud de nodos</h2>
+            <p>Estado reportado por Heartbeat V2. Un nodo se considera STALE después de 180 segundos sin reporte.</p>
+          </div>
+
+          <div class="health-summary" aria-label="Resumen de salud">
+            <span class="health-chip">Total <strong id="healthTotal">0</strong></span>
+            <span class="health-chip synced">SYNCED <strong id="healthSynced">0</strong></span>
+            <span class="health-chip drift">DRIFT <strong id="healthDrift">0</strong></span>
+            <span class="health-chip stale">STALE <strong id="healthStale">0</strong></span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nodo</th>
+                <th>Estado</th>
+                <th>Último reporte</th>
+                <th>Deseado</th>
+                <th>Aplicado</th>
+                <th>Reglas</th>
+                <th>Jumps</th>
+                <th>Agent</th>
+                <th>Helper</th>
+                <th>Hash</th>
+              </tr>
+            </thead>
+            <tbody id="nodeHealthBody">
+              <tr class="empty-row"><td colspan="10">Consultando telemetría de nodos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="healthUpdatedText">Esperando Heartbeat V2...</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/diagnostico.js?v=1"></script>
+  <script src="js/health.js?v=1"></script>
+</body>
+</html>
