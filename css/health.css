@@ -1,0 +1,174 @@
+/* Infraestructura / Salud de nodos */
+.health-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.health-chip {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: #52647f;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.health-chip strong {
+  color: #17345f;
+  font-size: 12px;
+}
+
+.health-chip.synced {
+  background: var(--green-soft);
+  border-color: #bfe9cf;
+  color: #167944;
+}
+
+.health-chip.drift {
+  background: var(--red-soft);
+  border-color: #f2c4c4;
+  color: #b82f2f;
+}
+
+.health-chip.stale {
+  background: var(--yellow-soft);
+  border-color: #f0d98c;
+  color: #946208;
+}
+
+.health-badge {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.health-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.health-badge.synced {
+  color: #167944;
+  background: var(--green-soft);
+}
+
+.health-badge.drift {
+  color: #bd3030;
+  background: var(--red-soft);
+}
+
+.health-badge.stale {
+  color: #956208;
+  background: var(--yellow-soft);
+}
+
+.health-badge.unknown {
+  color: #68778d;
+  background: #eef2f6;
+}
+
+.health-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 750;
+  color: #294260;
+}
+
+.health-count.match {
+  color: #167944;
+}
+
+.health-count.mismatch {
+  color: #be3030;
+}
+
+.health-hash {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.health-hash.ok {
+  color: #167944;
+}
+
+.health-hash.diff {
+  color: #be3030;
+}
+
+.health-hash.na {
+  color: #8794a8;
+}
+
+.health-version,
+.health-sha {
+  display: block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.health-version {
+  color: #294260;
+  font-weight: 750;
+}
+
+.health-sha {
+  margin-top: 2px;
+  color: #8794a8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+}
+
+.health-last-seen {
+  font-variant-numeric: tabular-nums;
+  color: #425674;
+}
+
+.health-age {
+  display: block;
+  margin-top: 2px;
+  color: #8794a8;
+  font-size: 10px;
+}
+
+.health-error {
+  color: #ad3232;
+  font-weight: 700;
+}
+
+#nodeHealthPanel tbody tr.health-row-drift td {
+  background: #fffafa;
+}
+
+#nodeHealthPanel tbody tr.health-row-stale td {
+  background: #fffdf7;
+}
+
+#nodeHealthPanel tbody tr.health-row-drift:hover td,
+#nodeHealthPanel tbody tr.health-row-stale:hover td {
+  background: #fff8f8;
+}
+
+@media (max-width: 900px) {
+  .health-summary {
+    width: 100%;
+  }
+}
