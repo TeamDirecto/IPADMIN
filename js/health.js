@@ -148,6 +148,15 @@
     $("healthStale").textContent = stale;
   }
 
+  function emitHealth(staleAfter) {
+    window.dispatchEvent(new CustomEvent("ipm:health", {
+      detail: {
+        rows: latestRows.slice(),
+        staleAfter
+      }
+    }));
+  }
+
   function closeNodeDetail() {
     selectedNode = "";
     const drawer = $("nodeDetailDrawer");
@@ -222,6 +231,7 @@
       latestRows = [];
       body.innerHTML = '<tr class="empty-row"><td colspan="10">No hay telemetría de nodos disponible.</td></tr>';
       renderSummary([]);
+      emitHealth(staleAfter);
       closeNodeDetail();
       return;
     }
@@ -279,6 +289,7 @@
     }).join("");
 
     renderSummary(enriched.map((row) => row._state));
+    emitHealth(staleAfter);
     bindRowDetails();
 
     if (selectedNode) {
@@ -290,6 +301,24 @@
   function renderUnavailable(message) {
     const body = $("nodeHealthBody");
     if (!body) return;
+
+    const active = window.IPMMaintenance?.currentWindow?.();
+
+    if (active) {
+      body.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="10">
+            <div class="maintenance-api-note">
+              Ventana programada activa: ${escapeHtml(active.label)}. La ausencia temporal de telemetría se considera esperada y no una falla de los nodos.
+            </div>
+          </td>
+        </tr>
+      `;
+      const updated = $("healthUpdatedText");
+      if (updated) updated.textContent = "Ventana programada activa";
+      return;
+    }
+
     body.innerHTML = `
       <tr class="empty-row">
         <td colspan="10" class="health-error">${escapeHtml(message)}</td>
