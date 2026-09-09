@@ -1,0 +1,152 @@
+/* Diagnóstico - incidencias y actividad reciente */
+.diagnostic-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.incident-summary {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.incident-chip {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: #52647f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.incident-chip strong {
+  color: #17345f;
+}
+
+.incident-chip.ok {
+  background: var(--green-soft);
+  border-color: #bfe9cf;
+  color: #167944;
+}
+
+.incident-chip.warn {
+  background: var(--yellow-soft);
+  border-color: #f0d98c;
+  color: #946208;
+}
+
+.incident-chip.error {
+  background: var(--red-soft);
+  border-color: #f2c4c4;
+  color: #b82f2f;
+}
+
+.incident-list {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px 18px;
+}
+
+.incident-empty {
+  padding: 16px 18px 18px;
+  color: #5f728d;
+}
+
+.incident-item {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto minmax(220px, 2fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.incident-item.drift {
+  border-color: #f2c4c4;
+  background: #fffafa;
+}
+
+.incident-item.stale {
+  border-color: #f0d98c;
+  background: #fffdf7;
+}
+
+.incident-node {
+  font-weight: 850;
+  color: #203b61;
+}
+
+.incident-detail {
+  color: #63758f;
+  font-size: 12px;
+}
+
+.event-type {
+  min-height: 23px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.event-type.add {
+  background: var(--green-soft);
+  color: #167944;
+}
+
+.event-type.remove {
+  background: #eaf1ff;
+  color: #315fa9;
+}
+
+.event-type.error {
+  background: var(--red-soft);
+  color: #b82f2f;
+}
+
+.event-status {
+  font-size: 11px;
+  font-weight: 800;
+  color: #425674;
+}
+
+.event-status.completed {
+  color: #167944;
+}
+
+.event-status.error {
+  color: #b82f2f;
+}
+
+.event-message {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #63758f;
+  font-size: 11px;
+}
+
+.event-ip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-weight: 750;
+  color: #294260;
+}
+
+@media (max-width: 800px) {
+  .incident-item {
+    grid-template-columns: 1fr;
+  }
+}
