@@ -7,6 +7,8 @@
 
   let timer = null;
   let loading = false;
+  let latestRows = [];
+  let selectedNode = "";
 
   const $ = (id) => document.getElementById(id);
 
@@ -98,7 +100,6 @@
       row.desired_hash && row.applied_hash;
 
     if (!metricsPresent) return backendState || "UNKNOWN";
-
     if (desired === applied && sameHash(row) && jumps === 1) return "SYNCED";
     return "DRIFT";
   }
@@ -147,13 +148,81 @@
     $("healthStale").textContent = stale;
   }
 
+  function closeNodeDetail() {
+    selectedNode = "";
+    const drawer = $("nodeDetailDrawer");
+    const overlay = $("nodeDetailOverlay");
+    if (drawer) drawer.hidden = true;
+    if (overlay) overlay.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function openNodeDetail(row) {
+    if (!row || !$("nodeDetailDrawer")) return;
+
+    selectedNode = row.node_name || "";
+    const state = row._state || stateFor(row, STALE_AFTER_SECONDS);
+    const age = row._age ?? ageSeconds(row);
+
+    $("nodeDetailTitle").textContent = nodeLabel(row.node_name);
+    $("nodeDetailState").innerHTML = stateBadge(state);
+    $("detailLastSeen").textContent = formatDate(row.last_seen);
+    $("detailAge").textContent = `hace ${ageLabel(age)}`;
+    $("detailDesired").textContent = numberOrDash(row.desired_count);
+    $("detailApplied").textContent = numberOrDash(row.applied_count);
+    $("detailFirewall").textContent = `${numberOrDash(row.rule_count)} / ${numberOrDash(row.jump_count)}`;
+
+    $("detailAgentVersion").textContent = row.agent_version || "-";
+    $("detailAgentSha").textContent = row.agent_sha || "-";
+    $("detailHelperVersion").textContent = row.helper_version || "-";
+    $("detailHelperSha").textContent = row.helper_sha || "-";
+    $("detailDesiredHash").textContent = row.desired_hash || "-";
+    $("detailAppliedHash").textContent = row.applied_hash || "-";
+
+    const hashResult = $("detailHashResult");
+    if (!row.desired_hash || !row.applied_hash) {
+      hashResult.className = "node-detail-result na";
+      hashResult.textContent = "Sin información suficiente para comparar hashes.";
+    } else if (sameHash(row)) {
+      hashResult.className = "node-detail-result ok";
+      hashResult.textContent = "Integridad OK: desired_hash y applied_hash coinciden.";
+    } else {
+      hashResult.className = "node-detail-result diff";
+      hashResult.textContent = "DRIFT: desired_hash y applied_hash son diferentes.";
+    }
+
+    $("nodeDetailOverlay").hidden = false;
+    $("nodeDetailDrawer").hidden = false;
+    document.body.style.overflow = "hidden";
+    $("nodeDetailClose")?.focus();
+  }
+
+  function bindRowDetails() {
+    document.querySelectorAll("#nodeHealthBody tr.health-clickable").forEach((tr) => {
+      const open = () => {
+        const row = latestRows.find((item) => item.node_name === tr.dataset.node);
+        if (row) openNodeDetail(row);
+      };
+
+      tr.addEventListener("click", open);
+      tr.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open();
+        }
+      });
+    });
+  }
+
   function renderRows(rows, staleAfter) {
     const body = $("nodeHealthBody");
     if (!body) return;
 
     if (!rows.length) {
+      latestRows = [];
       body.innerHTML = '<tr class="empty-row"><td colspan="10">No hay telemetría de nodos disponible.</td></tr>';
       renderSummary([]);
+      closeNodeDetail();
       return;
     }
 
@@ -179,18 +248,19 @@
     };
 
     enriched.sort((a, b) => (order[a.node_name] ?? 999) - (order[b.node_name] ?? 999));
+    latestRows = enriched;
 
     body.innerHTML = enriched.map((row) => {
       const countsMatch = Number(row.desired_count) === Number(row.applied_count);
       const countClass = countsMatch ? "match" : "mismatch";
-      const rowClass = row._state === "DRIFT"
+      const stateClass = row._state === "DRIFT"
         ? "health-row-drift"
         : row._state === "STALE"
           ? "health-row-stale"
           : "";
 
       return `
-        <tr class="${rowClass}">
+        <tr class="health-clickable ${stateClass}" data-node="${escapeHtml(row.node_name)}" tabindex="0" aria-label="Abrir detalle de ${escapeHtml(nodeLabel(row.node_name))}">
           <td><strong>${escapeHtml(nodeLabel(row.node_name))}</strong></td>
           <td>${stateBadge(row._state)}</td>
           <td class="health-last-seen">
@@ -209,6 +279,12 @@
     }).join("");
 
     renderSummary(enriched.map((row) => row._state));
+    bindRowDetails();
+
+    if (selectedNode) {
+      const selected = latestRows.find((row) => row.node_name === selectedNode);
+      if (selected) openNodeDetail(selected);
+    }
   }
 
   function renderUnavailable(message) {
@@ -297,6 +373,13 @@
 
   const refresh = $("refreshButton");
   if (refresh) refresh.addEventListener("click", loadHealth);
+
+  $("nodeDetailClose")?.addEventListener("click", closeNodeDetail);
+  $("nodeDetailOverlay")?.addEventListener("click", closeNodeDetail);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && selectedNode) closeNodeDetail();
+  });
 
   start();
 })();
