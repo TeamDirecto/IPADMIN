@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light">
   <title>VICIdial IP Manager | Diagnóstico</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
-  <link rel="stylesheet" href="css/health.css?v=1">
+  <link rel="stylesheet" href="css/health.css?v=2">
 </head>
 <body>
   <div id="appView" class="app-shell" hidden>
@@ -37,7 +37,7 @@
         <div class="panel-header toolbar-header">
           <div>
             <h2>Salud de nodos</h2>
-            <p>Estado reportado por Heartbeat V2. Un nodo se considera STALE después de 180 segundos sin reporte.</p>
+            <p>Estado reportado por Heartbeat V2. Un nodo se considera STALE después de 180 segundos sin reporte. Haz clic en un nodo para ver el detalle.</p>
           </div>
 
           <div class="health-summary" aria-label="Resumen de salud">
@@ -75,9 +75,64 @@
         </div>
       </section>
     </main>
+
+    <div id="nodeDetailOverlay" class="node-detail-overlay" hidden></div>
+    <aside id="nodeDetailDrawer" class="node-detail-drawer" hidden aria-labelledby="nodeDetailTitle">
+      <div class="node-detail-header">
+        <div>
+          <small>Diagnóstico del nodo</small>
+          <h2 id="nodeDetailTitle">-</h2>
+        </div>
+        <button id="nodeDetailClose" class="node-detail-close" type="button" aria-label="Cerrar detalle">×</button>
+      </div>
+
+      <div id="nodeDetailState" class="node-detail-state"></div>
+
+      <div class="node-detail-grid">
+        <div class="node-detail-card">
+          <span>Último reporte</span>
+          <strong id="detailLastSeen">-</strong>
+          <small id="detailAge">-</small>
+        </div>
+        <div class="node-detail-card">
+          <span>Estado deseado</span>
+          <strong id="detailDesired">-</strong>
+          <small>IPs esperadas</small>
+        </div>
+        <div class="node-detail-card">
+          <span>Estado aplicado</span>
+          <strong id="detailApplied">-</strong>
+          <small>IPs detectadas</small>
+        </div>
+        <div class="node-detail-card">
+          <span>Firewall</span>
+          <strong id="detailFirewall">-</strong>
+          <small>reglas / jumps</small>
+        </div>
+      </div>
+
+      <section class="node-detail-section">
+        <h3>Agent</h3>
+        <div class="node-detail-line"><span>Versión</span><code id="detailAgentVersion">-</code></div>
+        <div class="node-detail-line node-detail-line-stack"><span>SHA256</span><code id="detailAgentSha">-</code></div>
+      </section>
+
+      <section class="node-detail-section">
+        <h3>Helper</h3>
+        <div class="node-detail-line"><span>Versión</span><code id="detailHelperVersion">-</code></div>
+        <div class="node-detail-line node-detail-line-stack"><span>SHA256</span><code id="detailHelperSha">-</code></div>
+      </section>
+
+      <section class="node-detail-section">
+        <h3>Integridad</h3>
+        <div class="node-detail-line node-detail-line-stack"><span>Desired hash</span><code id="detailDesiredHash">-</code></div>
+        <div class="node-detail-line node-detail-line-stack"><span>Applied hash</span><code id="detailAppliedHash">-</code></div>
+        <div id="detailHashResult" class="node-detail-result">-</div>
+      </section>
+    </aside>
   </div>
 
   <script src="js/diagnostico.js?v=1"></script>
-  <script src="js/health.js?v=1"></script>
+  <script src="js/health.js?v=2"></script>
 </body>
 </html>
