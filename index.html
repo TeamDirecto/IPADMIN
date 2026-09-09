@@ -6,6 +6,7 @@
   <meta name="color-scheme" content="light">
   <title>VICIdial IP Manager | Administración</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
+  <link rel="stylesheet" href="css/health.css?v=1">
   <link rel="stylesheet" href="css/voice.css?v=1">
 </head>
 <body>
@@ -95,6 +96,48 @@
             <div class="metric-help">Histórico automático</div>
           </div>
         </article>
+      </section>
+
+      <section class="panel" id="nodeHealthPanel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>Infraestructura / Salud de nodos</h2>
+            <p>Estado reportado por Heartbeat V2. Un nodo se considera STALE después de 180 segundos sin reporte.</p>
+          </div>
+
+          <div class="health-summary" aria-label="Resumen de salud">
+            <span class="health-chip">Total <strong id="healthTotal">0</strong></span>
+            <span class="health-chip synced">SYNCED <strong id="healthSynced">0</strong></span>
+            <span class="health-chip drift">DRIFT <strong id="healthDrift">0</strong></span>
+            <span class="health-chip stale">STALE <strong id="healthStale">0</strong></span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nodo</th>
+                <th>Estado</th>
+                <th>Último reporte</th>
+                <th>Deseado</th>
+                <th>Aplicado</th>
+                <th>Reglas</th>
+                <th>Jumps</th>
+                <th>Agent</th>
+                <th>Helper</th>
+                <th>Hash</th>
+              </tr>
+            </thead>
+            <tbody id="nodeHealthBody">
+              <tr class="empty-row"><td colspan="10">Consultando telemetría de nodos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="healthUpdatedText">Esperando Heartbeat V2...</span>
+        </div>
       </section>
 
       <section class="panel" id="pendingPanel">
@@ -216,6 +259,7 @@
   </div>
 
   <script src="js/admin.js?v=2"></script>
+  <script src="js/health.js?v=1"></script>
   <script src="js/voice.js?v=2"></script>
 </body>
 </html>
