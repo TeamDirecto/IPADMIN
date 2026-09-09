@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>VICIdial IP Manager | Administración</title>
+  <link rel="stylesheet" href="css/admin.css?v=2">
+</head>
+<body>
+  <div id="loginView" class="login-shell">
+    <section class="login-card" aria-labelledby="loginTitle">
+      <div class="login-brand">VICIdial IP Manager</div>
+      <h1 id="loginTitle">Acceso administrativo</h1>
+      <p>Ingresa con tu cuenta de administración para gestionar accesos IP.</p>
+
+      <form id="loginForm" autocomplete="off">
+        <label for="loginUser">Usuario</label>
+        <input id="loginUser" name="username" value="IPADMIN" autocomplete="username" required>
+
+        <label for="loginPassword">Contraseña</label>
+        <input id="loginPassword" name="password" type="password" autocomplete="current-password" required>
+
+        <button id="loginButton" type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+        <div id="loginError" class="form-error" role="alert" hidden></div>
+      </form>
+    </section>
+  </div>
+
+  <div id="appView" class="app-shell" hidden>
+    <header class="topbar">
+      <div class="brand-group">
+        <div class="brand-title">VICIdial IP Manager</div>
+        <div class="brand-divider"></div>
+        <div class="brand-subtitle">Administración de accesos IP</div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="system-state">
+          <span id="systemDot" class="status-dot online"></span>
+          <div>
+            <strong id="systemStateText">Sistema en línea</strong>
+            <small id="lastUpdateText">Sincronizando...</small>
+          </div>
+        </div>
+
+        <div class="session-user">
+          <span class="avatar">IP</span>
+          <div>
+            <strong id="sessionUser">IPADMIN</strong>
+            <small>Administrador</small>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" type="button" onclick="window.location.href='diagnostico.html'">Diagnóstico</button>
+        <button id="refreshButton" class="btn btn-secondary" type="button">Actualizar</button>
+        <button id="logoutButton" class="btn btn-ghost" type="button">Salir</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="metrics" aria-label="Resumen">
+        <article class="metric-card metric-pending">
+          <div class="metric-icon">◷</div>
+          <div>
+            <div id="metricPending" class="metric-number">0</div>
+            <div class="metric-label">Solicitudes pendientes</div>
+            <div class="metric-help">Requieren revisión</div>
+          </div>
+        </article>
+
+        <article class="metric-card metric-active">
+          <div class="metric-icon">✓</div>
+          <div>
+            <div id="metricActive" class="metric-number">0</div>
+            <div class="metric-label">IPs activas</div>
+            <div class="metric-help">En uso actualmente</div>
+          </div>
+        </article>
+
+        <article class="metric-card metric-expiring">
+          <div class="metric-icon">⌛</div>
+          <div>
+            <div id="metricExpiring" class="metric-number">0</div>
+            <div class="metric-label">Por expirar</div>
+            <div class="metric-help">Próximos 7 días</div>
+          </div>
+        </article>
+
+        <article class="metric-card metric-expired">
+          <div class="metric-icon">!</div>
+          <div>
+            <div id="metricExpired" class="metric-number">0</div>
+            <div class="metric-label">IPs expiradas</div>
+            <div class="metric-help">Histórico automático</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel" id="pendingPanel">
+        <div class="panel-header pending-header">
+          <div>
+            <h2>Solicitudes pendientes</h2>
+            <p>Solicitudes de acceso IP que requieren revisión, aprobación o rechazo.</p>
+          </div>
+
+          <div class="bulk-controls">
+            <label class="select-all-control">
+              <input id="selectAllPending" type="checkbox">
+              <span>Seleccionar todo</span>
+            </label>
+            <button id="approveSelectedButton" class="btn btn-primary" type="button" disabled>Aprobar seleccionadas</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="check-col"></th>
+                <th>ID</th>
+                <th>IP</th>
+                <th>Centro</th>
+                <th>Solicitado por</th>
+                <th>Nodo destino</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="pendingBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="pendingCountText">0 solicitudes</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>IPs activas</h2>
+            <p>Listado de IPs actualmente activas en el sistema.</p>
+          </div>
+          <div class="table-tools">
+            <input id="activeSearch" class="search-input" type="search" placeholder="Buscar por IP, centro, nodo, estado o usuario...">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>IP</th>
+                <th>Centro</th>
+                <th>Solicitado por</th>
+                <th>Nodo destino</th>
+                <th>Vence</th>
+                <th>Estado</th>
+                <th>Aprobado por</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="activeBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-footer pagination-footer">
+          <span id="activeCountText">Mostrando 0 de 0</span>
+          <div id="activePager" class="pager"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>Historial</h2>
+            <p>Registro de todas las solicitudes y cambios de estado.</p>
+          </div>
+          <div class="table-tools">
+            <input id="historySearch" class="search-input" type="search" placeholder="Buscar por IP, centro, nodo, estado o usuario...">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>IP</th>
+                <th>Centro</th>
+                <th>Solicitado por</th>
+                <th>Nodo destino</th>
+                <th>Vence</th>
+                <th>Estado</th>
+                <th>Aprobado por</th>
+                <th>Finalizado por</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-footer pagination-footer">
+          <span id="historyCountText">Mostrando 0 de 0</span>
+          <div id="historyPager" class="pager"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toastHost" class="toast-host" aria-live="polite"></div>
+  </div>
+
+  <script src="js/admin.js?v=2"></script>
+</body>
+</html>
