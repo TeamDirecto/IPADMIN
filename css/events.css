@@ -145,6 +145,33 @@
   color: #294260;
 }
 
+.state-transition {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.state-transition-arrow {
+  color: #8a98aa;
+  font-weight: 900;
+}
+
+.history-reason {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #63758f;
+  font-size: 11px;
+}
+
+.history-firewall {
+  color: #425674;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
 @media (max-width: 800px) {
   .incident-item {
     grid-template-columns: 1fr;
