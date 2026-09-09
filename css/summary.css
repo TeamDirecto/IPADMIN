@@ -1,0 +1,108 @@
+/* Diagnóstico - resumen técnico */
+.tech-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.tech-summary-card {
+  min-height: 112px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(31, 59, 97, .045);
+}
+
+.tech-summary-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #eef4ff;
+  color: #315fa9;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tech-summary-card.ok .tech-summary-icon {
+  background: var(--green-soft);
+  color: #167944;
+}
+
+.tech-summary-card.warn .tech-summary-icon {
+  background: var(--yellow-soft);
+  color: #946208;
+}
+
+.tech-summary-card.error .tech-summary-icon {
+  background: var(--red-soft);
+  color: #b82f2f;
+}
+
+.tech-summary-content {
+  min-width: 0;
+}
+
+.tech-summary-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #71819a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+}
+
+.tech-summary-value {
+  display: block;
+  color: #17345f;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tech-summary-help {
+  display: block;
+  margin-top: 5px;
+  color: #7f8da2;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tech-summary-card.ok .tech-summary-value {
+  color: #167944;
+}
+
+.tech-summary-card.warn .tech-summary-value {
+  color: #946208;
+}
+
+.tech-summary-card.error .tech-summary-value {
+  color: #b82f2f;
+}
+
+@media (max-width: 1180px) {
+  .tech-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .tech-summary {
+    grid-template-columns: 1fr;
+  }
+}
