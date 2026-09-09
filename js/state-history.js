@@ -73,6 +73,29 @@
     return `<span class="history-firewall">${esc(rules)} reglas · ${esc(jumps)} jump${Number(jumps) === 1 ? "" : "s"}</span>`;
   }
 
+  function maintenanceFor(item) {
+    return window.IPMMaintenance?.expectedHistoryEvent?.(item) || null;
+  }
+
+  function diagnosticCell(item, maintenance) {
+    const original = item.reason || "-";
+
+    if (!maintenance) {
+      return `<div class="history-reason" title="${esc(original)}">${esc(original)}</div>`;
+    }
+
+    const recovery = String(item.new_state || "").toUpperCase() === "SYNCED";
+    const text = recovery
+      ? "Recuperación posterior a ventana programada."
+      : "Pérdida de Heartbeat esperada durante mantenimiento programado.";
+
+    return `
+      <span class="maintenance-tag">MANTENIMIENTO</span>
+      <span class="maintenance-inline-note">${esc(text)}</span>
+      <div class="history-reason" title="${esc(original)}">${esc(original)}</div>
+    `;
+  }
+
   function render(items) {
     const body = $("stateHistoryBody");
     if (!body) return;
@@ -83,24 +106,50 @@
       return;
     }
 
-    body.innerHTML = items.map((item) => `
-      <tr>
-        <td>${esc(fmt(item.detected_at))}</td>
-        <td><strong>${esc(nodeLabel(item.node_name))}</strong></td>
-        <td>${transitionCell(item)}</td>
-        <td><div class="history-reason" title="${esc(item.reason || "-")}">${esc(item.reason || "-")}</div></td>
-        <td>${metricPair(item)}</td>
-        <td>${firewallPair(item)}</td>
-        <td>${esc(fmt(item.last_seen))}</td>
-      </tr>
-    `).join("");
+    let planned = 0;
 
-    $("stateHistoryCount").textContent = `${items.length} transición${items.length === 1 ? "" : "es"}`;
+    body.innerHTML = items.map((item) => {
+      const maintenance = maintenanceFor(item);
+      if (maintenance) planned += 1;
+
+      return `
+        <tr class="${maintenance ? "history-maintenance-row" : ""}">
+          <td>${esc(fmt(item.detected_at))}</td>
+          <td><strong>${esc(nodeLabel(item.node_name))}</strong></td>
+          <td>${transitionCell(item)}</td>
+          <td>${diagnosticCell(item, maintenance)}</td>
+          <td>${metricPair(item)}</td>
+          <td>${firewallPair(item)}</td>
+          <td>${esc(fmt(item.last_seen))}</td>
+        </tr>
+      `;
+    }).join("");
+
+    const suffix = planned
+      ? ` · ${planned} programada${planned === 1 ? "" : "s"}`
+      : "";
+
+    $("stateHistoryCount").textContent = `${items.length} transición${items.length === 1 ? "" : "es"}${suffix}`;
   }
 
   function renderError(message) {
     const body = $("stateHistoryBody");
     if (!body) return;
+
+    const active = window.IPMMaintenance?.currentWindow?.();
+    if (active) {
+      body.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="7">
+            <div class="maintenance-api-note">
+              Ventana programada activa. El canal central puede estar temporalmente no disponible y no se clasifica como incidencia inesperada.
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     body.innerHTML = `<tr class="empty-row"><td colspan="7" class="health-error">${esc(message)}</td></tr>`;
   }
 
