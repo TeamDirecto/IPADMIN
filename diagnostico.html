@@ -7,6 +7,7 @@
   <title>VICIdial IP Manager | Diagnóstico</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
   <link rel="stylesheet" href="css/summary.css?v=1">
+  <link rel="stylesheet" href="css/maintenance.css?v=1">
   <link rel="stylesheet" href="css/health.css?v=2">
   <link rel="stylesheet" href="css/events.css?v=3">
 </head>
@@ -73,6 +74,15 @@
         </article>
       </section>
 
+      <section id="maintenanceBanner" class="maintenance-banner" aria-live="polite" hidden>
+        <div class="maintenance-banner-icon">M</div>
+        <div class="maintenance-banner-copy">
+          <strong id="maintenanceTitle">Ventana de mantenimiento</strong>
+          <span id="maintenanceDetail">Consultando configuración...</span>
+        </div>
+        <span id="maintenanceStatus" class="maintenance-banner-status">-</span>
+      </section>
+
       <section class="panel diagnostic-collapsible is-collapsed" id="nodeHealthPanel">
         <div class="panel-header toolbar-header">
           <div>
@@ -120,7 +130,7 @@
           <div class="panel-header toolbar-header">
             <div>
               <h2>Incidencias actuales</h2>
-              <p>Nodos con DRIFT o sin Heartbeat reciente. Esta vista refleja el estado actual, no altera firewall ni agentes.</p>
+              <p>Nodos con DRIFT o sin Heartbeat reciente. Las ventanas programadas se clasifican como indisponibilidad esperada.</p>
             </div>
             <div class="incident-summary">
               <span class="incident-chip">Total <strong id="incidentTotal">0</strong></span>
@@ -172,7 +182,7 @@
           <div class="panel-header toolbar-header">
             <div>
               <h2>Historial de estado</h2>
-              <p>Transiciones reales detectadas por el monitor central: SYNCED, DRIFT y STALE. El estado inicial se conserva como línea base y no se registra como incidencia.</p>
+              <p>Transiciones reales detectadas por el monitor central. Los cambios coincidentes con ventanas programadas se etiquetan como mantenimiento y no como falla inesperada.</p>
             </div>
           </div>
 
@@ -260,9 +270,10 @@
   </div>
 
   <script src="js/diagnostico.js?v=2"></script>
+  <script src="js/maintenance.js?v=1"></script>
   <script src="js/summary.js?v=1"></script>
-  <script src="js/health.js?v=2"></script>
-  <script src="js/events.js?v=2"></script>
-  <script src="js/state-history.js?v=1"></script>
+  <script src="js/health.js?v=3"></script>
+  <script src="js/events.js?v=3"></script>
+  <script src="js/state-history.js?v=2"></script>
 </body>
 </html>
