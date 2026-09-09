@@ -6,6 +6,7 @@
   <meta name="color-scheme" content="light">
   <title>VICIdial IP Manager | Diagnóstico</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
+  <link rel="stylesheet" href="css/summary.css?v=1">
   <link rel="stylesheet" href="css/health.css?v=2">
   <link rel="stylesheet" href="css/events.css?v=2">
 </head>
@@ -34,6 +35,44 @@
     </header>
 
     <main class="page">
+      <section class="tech-summary" aria-label="Resumen técnico">
+        <article id="summaryOnline" class="tech-summary-card">
+          <div class="tech-summary-icon">●</div>
+          <div class="tech-summary-content">
+            <span class="tech-summary-label">Nodos online</span>
+            <strong class="tech-summary-value">-</strong>
+            <small class="tech-summary-help">Esperando Heartbeat V2...</small>
+          </div>
+        </article>
+
+        <article id="summaryOldestHeartbeat" class="tech-summary-card">
+          <div class="tech-summary-icon">◷</div>
+          <div class="tech-summary-content">
+            <span class="tech-summary-label">Heartbeat más viejo</span>
+            <strong class="tech-summary-value">-</strong>
+            <small class="tech-summary-help">Esperando telemetría...</small>
+          </div>
+        </article>
+
+        <article id="summaryErrors" class="tech-summary-card">
+          <div class="tech-summary-icon">!</div>
+          <div class="tech-summary-content">
+            <span class="tech-summary-label">Errores recientes</span>
+            <strong class="tech-summary-value">-</strong>
+            <small class="tech-summary-help">Acciones con ERROR en las últimas 24 h</small>
+          </div>
+        </article>
+
+        <article id="summaryPending" class="tech-summary-card">
+          <div class="tech-summary-icon">↻</div>
+          <div class="tech-summary-content">
+            <span class="tech-summary-label">Acciones pendientes</span>
+            <strong class="tech-summary-value">-</strong>
+            <small class="tech-summary-help">PENDING / RECEIVED entre eventos cargados</small>
+          </div>
+        </article>
+      </section>
+
       <section class="panel" id="nodeHealthPanel">
         <div class="panel-header toolbar-header">
           <div>
@@ -221,6 +260,7 @@
   </div>
 
   <script src="js/diagnostico.js?v=1"></script>
+  <script src="js/summary.js?v=1"></script>
   <script src="js/health.js?v=2"></script>
   <script src="js/events.js?v=2"></script>
   <script src="js/state-history.js?v=1"></script>
