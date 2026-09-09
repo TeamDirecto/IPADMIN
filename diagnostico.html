@@ -7,6 +7,7 @@
   <title>VICIdial IP Manager | Diagnóstico</title>
   <link rel="stylesheet" href="css/admin.css?v=2">
   <link rel="stylesheet" href="css/health.css?v=2">
+  <link rel="stylesheet" href="css/events.css?v=1">
 </head>
 <body>
   <div id="appView" class="app-shell" hidden>
@@ -74,6 +75,59 @@
           <span id="healthUpdatedText">Esperando Heartbeat V2...</span>
         </div>
       </section>
+
+      <div class="diagnostic-stack">
+        <section class="panel" id="incidentPanel">
+          <div class="panel-header toolbar-header">
+            <div>
+              <h2>Incidencias actuales</h2>
+              <p>Nodos con DRIFT o sin Heartbeat reciente. Esta vista refleja el estado actual, no altera firewall ni agentes.</p>
+            </div>
+            <div class="incident-summary">
+              <span class="incident-chip">Total <strong id="incidentTotal">0</strong></span>
+              <span class="incident-chip error">DRIFT <strong id="incidentDrift">0</strong></span>
+              <span class="incident-chip warn">STALE <strong id="incidentStale">0</strong></span>
+            </div>
+          </div>
+          <div id="incidentList" class="incident-list">
+            <div class="incident-empty">Consultando incidencias...</div>
+          </div>
+        </section>
+
+        <section class="panel" id="eventsPanel">
+          <div class="panel-header toolbar-header">
+            <div>
+              <h2>Actividad reciente</h2>
+              <p>Últimas acciones ADD/REMOVE entregadas a los nodos, incluyendo errores y resultados reportados.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Nodo</th>
+                  <th>Evento</th>
+                  <th>IP</th>
+                  <th>Solicitante</th>
+                  <th>Estado</th>
+                  <th>Solicitud</th>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody id="eventBody">
+                <tr class="empty-row"><td colspan="8">Consultando actividad reciente...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-footer pagination-footer">
+            <span id="eventCountText">0 eventos</span>
+            <span id="eventsUpdatedText">Esperando datos...</span>
+          </div>
+        </section>
+      </div>
     </main>
 
     <div id="nodeDetailOverlay" class="node-detail-overlay" hidden></div>
@@ -134,5 +188,6 @@
 
   <script src="js/diagnostico.js?v=1"></script>
   <script src="js/health.js?v=2"></script>
+  <script src="js/events.js?v=1"></script>
 </body>
 </html>
