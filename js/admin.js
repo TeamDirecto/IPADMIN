@@ -131,11 +131,11 @@
     refreshTimer = null;
     appView.hidden = true;
     loginView.hidden = false;
-    $("loginUser").value = username;
+    $("loginUser").value = "";
     $("loginPassword").value = "";
     loginError.hidden = !message;
     loginError.textContent = message;
-    setTimeout(() => (username ? $("loginPassword") : $("loginUser")).focus(), 50);
+    setTimeout(() => $("loginUser").focus(), 50);
   }
 
   function showApp() {
