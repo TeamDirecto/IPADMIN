@@ -6,7 +6,7 @@
   const REFRESH_MS = 30000;
 
   let token = sessionStorage.getItem("ipadmin_token") || "";
-  let username = sessionStorage.getItem("ipadmin_user") || "IPADMIN";
+  let username = sessionStorage.getItem("ipadmin_user") || "";
   let allRows = [];
   let activePage = 1;
   let historyPage = 1;
@@ -131,11 +131,11 @@
     refreshTimer = null;
     appView.hidden = true;
     loginView.hidden = false;
-    $("loginUser").value = username || "IPADMIN";
+    $("loginUser").value = username;
     $("loginPassword").value = "";
     loginError.hidden = !message;
     loginError.textContent = message;
-    setTimeout(() => $("loginPassword").focus(), 50);
+    setTimeout(() => (username ? $("loginPassword") : $("loginUser")).focus(), 50);
   }
 
   function showApp() {
@@ -146,7 +146,7 @@
 
   function setSession(newToken, newUser) {
     token = newToken || "";
-    username = newUser || "IPADMIN";
+    username = newUser || "";
     if (token) {
       sessionStorage.setItem("ipadmin_token", token);
       sessionStorage.setItem("ipadmin_user", username);
@@ -169,7 +169,7 @@
     });
 
     if (response.status === 401 && path !== "/auth/login") {
-      setSession("", "IPADMIN");
+      setSession("", "");
       showLogin("La sesión expiró. Inicia sesión nuevamente.");
       throw new Error("Sesión expirada");
     }
@@ -512,7 +512,7 @@
         return body;
       });
 
-      setSession(data.access_token, data.username || "IPADMIN");
+      setSession(data.access_token, data.username || $("loginUser").value.trim());
       pendingSnapshotInitialized = false;
       seenPendingIds = new Set();
       showApp();
@@ -528,7 +528,7 @@
   });
 
   $("logoutButton").addEventListener("click", () => {
-    setSession("", "IPADMIN");
+    setSession("", "");
     pendingSnapshotInitialized = false;
     seenPendingIds = new Set();
     showLogin();
