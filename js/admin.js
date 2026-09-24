@@ -7,6 +7,7 @@
 
   let token = sessionStorage.getItem("ipadmin_token") || "";
   let username = sessionStorage.getItem("ipadmin_user") || "";
+  let role = sessionStorage.getItem("ipadmin_role") || "";
   let allRows = [];
   let activePage = 1;
   let historyPage = 1;
@@ -138,21 +139,43 @@
     setTimeout(() => $("loginUser").focus(), 50);
   }
 
+  function roleLabel(value) {
+    const labels = {
+      APPROVER: "Aprobador",
+      SUPERADMIN: "Superadministrador"
+    };
+    return labels[String(value || "").toUpperCase()] || text(value);
+  }
+
+  function applyRoleUi() {
+    const isSuperadmin = role === "SUPERADMIN";
+    const diagnosticButton = $("diagnosticButton");
+    const usersButton = $("usersButton");
+    if (diagnosticButton) diagnosticButton.hidden = !isSuperadmin;
+    if (usersButton) usersButton.hidden = !isSuperadmin;
+    const sessionRole = $("sessionRole");
+    if (sessionRole) sessionRole.textContent = roleLabel(role);
+  }
+
   function showApp() {
     loginView.hidden = true;
     appView.hidden = false;
     $("sessionUser").textContent = username;
+    applyRoleUi();
   }
 
-  function setSession(newToken, newUser) {
+  function setSession(newToken, newUser, newRole) {
     token = newToken || "";
     username = newUser || "";
+    role = String(newRole || "").toUpperCase();
     if (token) {
       sessionStorage.setItem("ipadmin_token", token);
       sessionStorage.setItem("ipadmin_user", username);
+      sessionStorage.setItem("ipadmin_role", role);
     } else {
       sessionStorage.removeItem("ipadmin_token");
       sessionStorage.removeItem("ipadmin_user");
+      sessionStorage.removeItem("ipadmin_role");
     }
   }
 
@@ -169,7 +192,7 @@
     });
 
     if (response.status === 401 && path !== "/auth/login") {
-      setSession("", "");
+      setSession("", "", "");
       showLogin("La sesión expiró. Inicia sesión nuevamente.");
       throw new Error("Sesión expirada");
     }
@@ -512,7 +535,11 @@
         return body;
       });
 
-      setSession(data.access_token, data.username || $("loginUser").value.trim());
+      setSession(
+        data.access_token,
+        data.username || $("loginUser").value.trim(),
+        data.role || ""
+      );
       pendingSnapshotInitialized = false;
       seenPendingIds = new Set();
       showApp();
@@ -528,7 +555,7 @@
   });
 
   $("logoutButton").addEventListener("click", () => {
-    setSession("", "");
+    setSession("", "", "");
     pendingSnapshotInitialized = false;
     seenPendingIds = new Set();
     showLogin();
@@ -549,12 +576,31 @@
     renderHistory();
   });
 
+  const diagnosticButton = $("diagnosticButton");
+  if (diagnosticButton) {
+    diagnosticButton.addEventListener("click", () => {
+      if (role === "SUPERADMIN") window.location.href = "diagnostico.html";
+    });
+  }
+
+  const usersButton = $("usersButton");
+  if (usersButton) {
+    usersButton.addEventListener("click", () => {
+      if (role === "SUPERADMIN") window.location.href = "usuarios.html";
+    });
+  }
+
   document.addEventListener("pointerdown", unlockAudio, { once: true });
 
   if (token) {
-    showApp();
-    loadRequests();
-    refreshTimer = setInterval(loadRequests, REFRESH_MS);
+    if (role !== "APPROVER" && role !== "SUPERADMIN") {
+      setSession("", "", "");
+      showLogin("La sesión anterior necesita renovarse. Inicia sesión nuevamente.");
+    } else {
+      showApp();
+      loadRequests();
+      refreshTimer = setInterval(loadRequests, REFRESH_MS);
+    }
   } else {
     showLogin();
   }
