@@ -2,19 +2,26 @@
   "use strict";
 
   const token = sessionStorage.getItem("ipadmin_token") || "";
-  const username = sessionStorage.getItem("ipadmin_user") || "IPADMIN";
+  const username = sessionStorage.getItem("ipadmin_user") || "";
+  const role = sessionStorage.getItem("ipadmin_role") || "";
 
-  if (!token) {
+  if (!token || role !== "SUPERADMIN") {
+    sessionStorage.removeItem("ipadmin_token");
+    sessionStorage.removeItem("ipadmin_user");
+    sessionStorage.removeItem("ipadmin_role");
     window.location.replace("./");
     return;
   }
 
   const appView = document.getElementById("appView");
   const sessionUser = document.getElementById("sessionUser");
+  const sessionRole = document.getElementById("sessionRole");
   const logoutButton = document.getElementById("logoutButton");
   const backButton = document.getElementById("backButton");
+  const usersButton = document.getElementById("usersButton");
 
   if (sessionUser) sessionUser.textContent = username;
+  if (sessionRole) sessionRole.textContent = "Superadministrador";
   if (appView) appView.hidden = false;
 
   function setupCollapsibles() {
@@ -85,6 +92,7 @@
     logoutButton.addEventListener("click", () => {
       sessionStorage.removeItem("ipadmin_token");
       sessionStorage.removeItem("ipadmin_user");
+      sessionStorage.removeItem("ipadmin_role");
       window.location.replace("./");
     });
   }
@@ -92,6 +100,12 @@
   if (backButton) {
     backButton.addEventListener("click", () => {
       window.location.href = "./";
+    });
+  }
+
+  if (usersButton) {
+    usersButton.addEventListener("click", () => {
+      window.location.href = "usuarios.html";
     });
   }
 })();
