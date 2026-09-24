@@ -4,10 +4,15 @@
 
 .user-form {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(220px, .8fr) minmax(220px, 1fr) minmax(220px, 1fr) auto;
-  gap: 16px;
-  align-items: end;
-  padding: 18px;
+  grid-template-columns:
+    minmax(250px, 1.4fr)
+    minmax(220px, 1.1fr)
+    minmax(250px, 1.4fr)
+    minmax(250px, 1.4fr)
+    220px;
+  gap: 18px;
+  align-items: start;
+  padding: 20px 22px 22px;
 }
 
 .field {
@@ -32,6 +37,7 @@
   outline: none;
   background: #fff;
   color: #243653;
+  box-sizing: border-box;
 }
 
 .field input:focus,
@@ -48,9 +54,49 @@
   line-height: 1.35;
 }
 
+.user-form .field {
+  display: grid;
+  grid-template-rows: 20px 52px 18px;
+  row-gap: 6px;
+  align-content: start;
+}
+
+.user-form .field label {
+  margin: 0;
+  align-self: end;
+  font-size: 13px;
+}
+
+.user-form .field input,
+.user-form .field select {
+  height: 52px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.user-form .field small {
+  min-height: 18px;
+  margin: 0;
+  align-self: start;
+  font-size: 11px;
+  line-height: 18px;
+}
+
 .form-actions {
   display: flex;
-  align-items: end;
+  align-items: flex-start;
+  padding-top: 26px;
+}
+
+.user-form .form-actions .btn {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .user-role-select {
@@ -181,19 +227,29 @@
   height: 54px;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1450px) {
   .user-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .form-actions {
-    align-items: center;
+    grid-column: 1 / -1;
+    width: 220px;
+    justify-self: end;
+    padding-top: 0;
   }
 }
 
 @media (max-width: 720px) {
   .user-form {
     grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .form-actions {
+    grid-column: auto;
+    width: 100%;
+    justify-self: stretch;
   }
 
   .form-actions .btn {
