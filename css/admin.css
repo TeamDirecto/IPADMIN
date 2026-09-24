@@ -322,12 +322,5 @@ tbody tr:hover td { background: #fbfdff; }
   .search-input { width: 100%; }
 }
 
-/* Centro permanece en datos/DOM, solo se oculta visualmente */
-#pendingPanel thead th:nth-child(4),
-#pendingBody td:nth-child(4),
-main.page > section.panel:nth-of-type(3) thead th:nth-child(3),
-#activeBody td:nth-child(3),
-main.page > section.panel:nth-of-type(4) thead th:nth-child(3),
-#historyBody td:nth-child(3) {
-  display: none !important;
-}
+/* Las columnas IP, Centro, Solicitado por y Nodo destino se mantienen visibles
+   para que encabezados y datos conserven la misma alineación. */
