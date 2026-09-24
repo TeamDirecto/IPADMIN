@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>VICIdial IP Manager | Usuarios</title>
+  <link rel="stylesheet" href="css/admin.css?v=3">
+  <link rel="stylesheet" href="css/users.css?v=1">
+</head>
+<body>
+  <div id="appView" class="app-shell" hidden>
+    <header class="topbar">
+      <div class="brand-group">
+        <div class="brand-title">VICIdial IP Manager</div>
+        <div class="brand-divider"></div>
+        <div class="brand-subtitle">Administración de usuarios</div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="session-user">
+          <span class="avatar">IP</span>
+          <div>
+            <strong id="sessionUser"></strong>
+            <small id="sessionRole"></small>
+          </div>
+        </div>
+
+        <button id="requestsButton" class="btn btn-ghost" type="button">Solicitudes</button>
+        <button id="diagnosticButton" class="btn btn-secondary" type="button">Diagnóstico</button>
+        <button id="refreshButton" class="btn btn-secondary" type="button">Actualizar</button>
+        <button id="logoutButton" class="btn btn-ghost" type="button">Salir</button>
+      </div>
+    </header>
+
+    <main class="page users-page">
+      <section class="panel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>Crear usuario</h2>
+            <p>Las contraseñas se almacenan como PBKDF2-HMAC-SHA256 con salt individual. No se muestran después del alta.</p>
+          </div>
+        </div>
+
+        <form id="createUserForm" class="user-form" autocomplete="off">
+          <div class="field">
+            <label for="newUsername">Usuario</label>
+            <input id="newUsername" name="username" maxlength="40" autocomplete="off" required
+                   placeholder="usuario.ejemplo">
+            <small>3–40 caracteres: letras, números, punto, guion o guion bajo.</small>
+          </div>
+
+          <div class="field">
+            <label for="newRole">Rol</label>
+            <select id="newRole" name="role" required>
+              <option value="REQUESTER">REQUESTER · Solicitante</option>
+              <option value="APPROVER">APPROVER · Aprobador</option>
+              <option value="SUPERADMIN">SUPERADMIN · Superadministrador</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="newPassword">Contraseña</label>
+            <input id="newPassword" name="password" type="password" minlength="12" maxlength="256"
+                   autocomplete="new-password" required>
+            <small>Mínimo 12 caracteres.</small>
+          </div>
+
+          <div class="field">
+            <label for="newPasswordConfirm">Confirmar contraseña</label>
+            <input id="newPasswordConfirm" name="password_confirm" type="password" minlength="12" maxlength="256"
+                   autocomplete="new-password" required>
+          </div>
+
+          <div class="form-actions">
+            <button id="createUserButton" class="btn btn-primary" type="submit">Crear usuario</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header toolbar-header">
+          <div>
+            <h2>Usuarios administrados</h2>
+            <p>Los usuarios se desactivan en lugar de eliminarse para conservar trazabilidad.</p>
+          </div>
+          <div class="table-tools">
+            <input id="userSearch" class="search-input" type="search"
+                   placeholder="Buscar usuario, rol o creador...">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Último login</th>
+                <th>Creado por</th>
+                <th>Último cambio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usersBody">
+              <tr class="empty-row"><td colspan="7">Cargando usuarios...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="usersCountText">0 usuarios</span>
+        </div>
+      </section>
+    </main>
+
+    <div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+    <dialog id="passwordDialog" class="user-dialog">
+      <form id="passwordForm" method="dialog" autocomplete="off">
+        <div class="dialog-header">
+          <div>
+            <small>Restablecer contraseña</small>
+            <h2 id="passwordDialogTitle">Usuario</h2>
+          </div>
+          <button id="passwordDialogClose" class="dialog-close" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <input id="passwordUserId" type="hidden">
+
+        <div class="field">
+          <label for="resetPassword">Nueva contraseña</label>
+          <input id="resetPassword" type="password" minlength="12" maxlength="256"
+                 autocomplete="new-password" required>
+        </div>
+
+        <div class="field">
+          <label for="resetPasswordConfirm">Confirmar contraseña</label>
+          <input id="resetPasswordConfirm" type="password" minlength="12" maxlength="256"
+                 autocomplete="new-password" required>
+        </div>
+
+        <div class="dialog-actions">
+          <button id="cancelPasswordButton" class="btn btn-ghost" type="button">Cancelar</button>
+          <button id="savePasswordButton" class="btn btn-primary" type="submit">Guardar contraseña</button>
+        </div>
+      </form>
+    </dialog>
+  </div>
+
+  <script src="js/users.js?v=1"></script>
+</body>
+</html>
