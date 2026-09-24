@@ -49,11 +49,12 @@
           <span class="avatar">IP</span>
           <div>
             <strong id="sessionUser"></strong>
-            <small>Administrador</small>
+            <small id="sessionRole"></small>
           </div>
         </div>
 
-        <button class="btn btn-secondary" type="button" onclick="window.location.href='diagnostico.html'">Diagnóstico</button>
+        <button id="usersButton" class="btn btn-secondary" type="button" hidden>Usuarios</button>
+        <button id="diagnosticButton" class="btn btn-secondary" type="button" hidden>Diagnóstico</button>
         <button id="refreshButton" class="btn btn-secondary" type="button">Actualizar</button>
         <button id="logoutButton" class="btn btn-ghost" type="button">Salir</button>
       </div>
@@ -216,7 +217,7 @@
     <div id="toastHost" class="toast-host" aria-live="polite"></div>
   </div>
 
-  <script src="js/admin.js?v=3"></script>
+  <script src="js/admin.js?v=4"></script>
   <script src="js/crosscheck.js?v=1"></script>
   <script src="js/live-clock.js?v=1"></script>
   <script src="js/metric-details.js?v=1"></script>
