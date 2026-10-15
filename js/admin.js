@@ -271,7 +271,6 @@
         <td>${escapeHtml(row.id)}</td>
         <td class="ip-cell">${escapeHtml(text(row.ip))}</td>
         <td>${escapeHtml(text(row.requester))}</td>
-        <td>${escapeHtml(text(row.requested_by))}</td>
         <td>${escapeHtml(nodeLabel(row.node_name))}</td>
         <td>${statusBadge(row.status)}</td>
         <td>${escapeHtml(formatDate(row.created_at))}</td>
@@ -282,7 +281,7 @@
           </div>
         </td>
       </tr>
-    `).join("") : rowEmpty(9, "No hay solicitudes pendientes.");
+    `).join("") : rowEmpty(8, "No hay solicitudes pendientes.");
 
     $("pendingCountText").textContent = `${rows.length} solicitud${rows.length === 1 ? "" : "es"}`;
     selectAllPending.checked = false;
@@ -351,7 +350,7 @@
         <td>${escapeHtml(formatDate(row.approved_at || row.created_at))}</td>
         <td><button class="btn btn-danger btn-sm revoke-one" data-id="${escapeHtml(row.id)}">Revocar</button></td>
       </tr>
-    `).join("") : rowEmpty(10, "No hay IPs activas que coincidan con la búsqueda.");
+    `).join("") : rowEmpty(9, "No hay IPs activas que coincidan con la búsqueda.");
 
     const shownFrom = rows.length ? start + 1 : 0;
     const shownTo = Math.min(start + PAGE_SIZE, rows.length);
@@ -390,7 +389,7 @@
         <td>${escapeHtml(historyFinalizedBy(row))}</td>
         <td>${escapeHtml(historyDate(row))}</td>
       </tr>
-    `).join("") : rowEmpty(10, "No hay registros que coincidan con la búsqueda.");
+    `).join("") : rowEmpty(9, "No hay registros que coincidan con la búsqueda.");
 
     const shownFrom = rows.length ? start + 1 : 0;
     const shownTo = Math.min(start + PAGE_SIZE, rows.length);
