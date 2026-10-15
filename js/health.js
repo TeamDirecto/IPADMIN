@@ -15,6 +15,7 @@
   const nodeLabels = {
     vicidial43: "VICIDIAL 43",
     VicidialMED: "VICIDIAL MED",
+    CENTROSMED: "CENTROSMED",
     AliadosD1: "ALIADOS D1",
     AliadosD2: "ALIADOS D2",
     AliadosD3: "ALIADOS D3",
@@ -24,7 +25,12 @@
     generadoresmed2: "GENERADORES D2",
     "ViciMED-Dial3": "GENERADORES D3",
     "ViciIntelya-Dial4": "GENERADORES D4",
-    "ViciMED-Dial5": "GENERADORES D5"
+    "ViciMED-Dial5": "GENERADORES D5",
+    vici126: "CENTROSMED D1",
+    vici99: "CENTROSMED D2",
+    vici98: "CENTROSMED D3",
+    vici169: "CENTROSMED D4",
+    vicidial137: "CENTROSMED REPLICA"
   };
 
   function escapeHtml(value) {
@@ -253,8 +259,15 @@
       "ViciMED-Dial3": 22,
       "ViciIntelya-Dial4": 23,
       "ViciMED-Dial5": 24,
-      "VicidialMED": 30,
-      "vicidial43": 40
+      vici126: 30,
+      vici99: 31,
+      vici98: 32,
+      vici169: 33,
+      "VicidialMED": 40,
+      "vicidial43": 50,
+      vicidial137: 60,
+      AliadosReplica: 61,
+      GeneradoresReplica: 62
     };
 
     enriched.sort((a, b) => (order[a.node_name] ?? 999) - (order[b.node_name] ?? 999));
