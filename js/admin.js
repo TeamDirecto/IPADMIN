@@ -342,7 +342,6 @@
         <td>${escapeHtml(row.id)}</td>
         <td class="ip-cell">${escapeHtml(text(row.ip))}</td>
         <td>${escapeHtml(text(row.requester))}</td>
-        <td>${escapeHtml(text(row.requested_by))}</td>
         <td>${escapeHtml(nodeLabel(row.node_name))}</td>
         <td>${escapeHtml(formatDate(row.expires_at))}</td>
         <td>${statusBadge(row.status)}</td>
@@ -381,7 +380,6 @@
         <td>${escapeHtml(row.id)}</td>
         <td class="ip-cell">${escapeHtml(text(row.ip))}</td>
         <td>${escapeHtml(text(row.requester))}</td>
-        <td>${escapeHtml(text(row.requested_by))}</td>
         <td>${escapeHtml(nodeLabel(row.node_name))}</td>
         <td>${escapeHtml(formatDate(row.expires_at))}</td>
         <td>${statusBadge(row.status)}</td>
