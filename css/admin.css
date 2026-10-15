@@ -322,5 +322,14 @@ tbody tr:hover td { background: #fbfdff; }
   .search-input { width: 100%; }
 }
 
-/* Las columnas IP, Centro, Solicitado por y Nodo destino se mantienen visibles
-   para que encabezados y datos conserven la misma alineación. */
+/* Centro se conserva en datos/DOM para búsqueda y trazabilidad, pero se oculta
+   visualmente en las tablas administrativas porque actualmente corresponde a la
+   identidad autenticada del solicitante. */ 
+#pendingPanel thead th:nth-child(4),
+#pendingBody td:nth-child(4),
+main.page > section.panel:nth-of-type(3) thead th:nth-child(3),
+#activeBody td:nth-child(3),
+main.page > section.panel:nth-of-type(4) thead th:nth-child(3),
+#historyBody td:nth-child(3) {
+  display: none !important;
+}
