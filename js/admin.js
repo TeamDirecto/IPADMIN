@@ -51,6 +51,7 @@
       VicidialMED: "VICIDIAL MED",
       ALIADOS: "ALIADOS",
       GENERADORES: "GENERADORES",
+      CENTROSMED: "CENTROSMED",
       AliadosD1: "ALIADOS D1",
       AliadosD2: "ALIADOS D2",
       AliadosD3: "ALIADOS D3",
@@ -60,7 +61,12 @@
       generadoresmed2: "GENERADORES D2",
       "ViciMED-Dial3": "GENERADORES D3",
       "ViciIntelya-Dial4": "GENERADORES D4",
-      "ViciMED-Dial5": "GENERADORES D5"
+      "ViciMED-Dial5": "GENERADORES D5",
+      vici126: "CENTROSMED D1",
+      vici99: "CENTROSMED D2",
+      vici98: "CENTROSMED D3",
+      vici169: "CENTROSMED D4",
+      vicidial137: "CENTROSMED REPLICA"
     };
     return map[value] || text(value);
   }
