@@ -67,3 +67,19 @@ html:not([data-theme="dark"]) .flip-clock .flip-digit{
   background:linear-gradient(to bottom,#52677d 0%,#40566b 48%,#26384b 49%,#26384b 51%,#40566b 52%,#52677d 100%) !important;
   border-color:#71869a !important;
 }
+
+
+/* Users other than IPADMIN see a simple clock. */
+.flip-clock.normal-clock{
+  display:inline-block !important;
+  width:auto !important;
+  height:auto !important;
+  margin-top:3px !important;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  line-height:16px !important;
+  letter-spacing:.02em !important;
+  color:#aebdd0 !important;
+  white-space:nowrap !important;
+}
