@@ -38,7 +38,10 @@
 
     const button = $("themeToggle");
     if (button) {
-      button.textContent = normalized === "dark" ? "☀️ Claro" : "🌙 Oscuro";
+      const icon = button.querySelector(".theme-icon");
+      const label = button.querySelector(".theme-label");
+      if (icon) icon.textContent = normalized === "dark" ? "☾" : "☀";
+      if (label) label.textContent = normalized === "dark" ? "Oscuro" : "Claro";
       button.setAttribute(
         "aria-label",
         normalized === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
