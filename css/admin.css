@@ -964,3 +964,103 @@ html:not([data-theme="dark"]) .btn-ghost {
   border-bottom-style: solid !important;
   border-bottom-width: 4px !important;
 }
+
+
+/* SHARED THEME FOR USERS + DIAGNOSTICS */
+html[data-theme="dark"] .tech-summary-card,
+html[data-theme="dark"] .user-dialog {
+  background: #0d1e31;
+  border-color: #29415c;
+  color: #e7edf7;
+}
+html[data-theme="dark"] .tech-summary-label,
+html[data-theme="dark"] .tech-summary-help {
+  color: #9fb0c5;
+}
+html[data-theme="dark"] .tech-summary-value {
+  color: #f3f6fb;
+}
+html[data-theme="dark"] .user-dialog form,
+html[data-theme="dark"] .user-dialog .field label,
+html[data-theme="dark"] .dialog-header h2 {
+  color: #edf3fa;
+}
+html[data-theme="dark"] .user-dialog input,
+html[data-theme="dark"] .user-dialog select {
+  background: #0a192b;
+  border-color: #405a77;
+  color: #edf3fa;
+}
+html[data-theme="dark"] .user-dialog::backdrop {
+  background: rgba(2,10,20,.70);
+}
+html[data-theme="dark"] .dialog-header small,
+html[data-theme="dark"] .user-meta small {
+  color: #9fb0c5;
+}
+html[data-theme="dark"] .dialog-close {
+  background: #1b2b40;
+  color: #e5edf7;
+}
+html[data-theme="dark"] .diagnostic-collapse-toggle {
+  background: #12263d;
+  border-color: #405a77;
+  color: #e5edf7;
+}
+html[data-theme="dark"] .diagnostic-collapse-toggle:hover {
+  background: #1b3653;
+}
+html[data-theme="dark"] .node-detail-drawer,
+html[data-theme="dark"] .node-detail-card {
+  background: #0d1e31;
+  border-color: #29415c;
+  color: #e7edf7;
+}
+html[data-theme="dark"] .node-detail-card > span,
+html[data-theme="dark"] .node-detail-card small,
+html[data-theme="dark"] .node-detail-line > span {
+  color: #9fb0c5;
+}
+html[data-theme="dark"] .node-detail-card strong,
+html[data-theme="dark"] .node-detail-section h3,
+html[data-theme="dark"] .node-detail-line code {
+  color: #e8eff8;
+}
+html[data-theme="dark"] .node-detail-line {
+  border-top-color: #20364e;
+}
+html[data-theme="dark"] .node-detail-line-stack code {
+  background: #101f32;
+  color: #dce7f3;
+}
+html[data-theme="dark"] .maintenance-banner,
+html[data-theme="dark"] .maintenance-api-note {
+  background: #172a40;
+  border-color: #536b86;
+  color: #dce7f3;
+}
+html[data-theme="dark"] .maintenance-banner-copy strong {
+  color: #edf3fa;
+}
+html[data-theme="dark"] .maintenance-banner-copy span {
+  color: #aebdd0;
+}
+html[data-theme="dark"] .history-maintenance-row td {
+  background: #172536;
+}
+html[data-theme="dark"] .history-maintenance-row:hover td {
+  background: #1d3045;
+}
+html[data-theme="dark"] .history-reason,
+html[data-theme="dark"] .history-firewall {
+  color: #b7c5d6;
+}
+html[data-theme="dark"] .user-state.inactive {
+  background: #3d2024;
+  color: #ff9292;
+}
+html[data-theme="dark"] .btn-warning {
+  background: #3b301d;
+  border-color: #765b2b;
+  color: #ffd083;
+}
