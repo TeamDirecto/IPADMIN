@@ -31,7 +31,7 @@
   <div id="appView" class="app-shell" hidden>
     <header class="topbar">
       <div class="brand-group">
-         <img class="brand-logo brand-logo-light" src="https://directo.com/logo-directo.svg" alt="Directo">
+         <img class="brand-logo brand-logo-light" src="assets/directo-logo.svg" alt="Directo">
          <img class="brand-logo brand-logo-dark" src="assets/directo-logo-dark.svg" alt="Directo">
 
         <div class="brand-title">VICIdial IP Manager</div>
@@ -56,11 +56,11 @@
           </div>
         </div>
 
-        <button id="usersButton" class="btn btn-secondary" type="button" hidden>Usuarios</button>
-        <button id="diagnosticButton" class="btn btn-secondary" type="button" hidden>Diagnóstico</button>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema">🌙 Oscuro</button>
-        <button id="refreshButton" class="btn btn-secondary" type="button">Actualizar</button>
-        <button id="logoutButton" class="btn btn-ghost" type="button">Salir</button>
+        <button id="usersButton" class="btn btn-secondary" type="button" hidden><span class="btn-icon" aria-hidden="true">♟</span>Usuarios</button>
+        <button id="diagnosticButton" class="btn btn-secondary" type="button" hidden><span class="btn-icon" aria-hidden="true">⚕</span>Diagnóstico</button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Oscuro</span></button>
+        <button id="refreshButton" class="btn btn-secondary" type="button"><span class="btn-icon" aria-hidden="true">↻</span>Actualizar</button>
+        <button id="logoutButton" class="btn btn-ghost" type="button"><span class="btn-icon" aria-hidden="true">↪</span>Salir</button>
       </div>
     </header>
 
@@ -106,16 +106,15 @@
       <section class="panel" id="pendingPanel">
         <div class="panel-header pending-header">
           <div>
-            <h2>Solicitudes pendientes</h2>
-            <p>Solicitudes de acceso IP que requieren revisión, aprobación o rechazo.</p>
-          </div>
+            <div class="panel-title-row"><span class="panel-icon" aria-hidden="true">▤</span><div><h2>Solicitudes pendientes</h2>
+            <p>Solicitudes de acceso IP que requieren revisión, aprobación o rechazo.</p></div></div>
 
           <div class="bulk-controls">
             <label class="select-all-control">
               <input id="selectAllPending" type="checkbox">
               <span>Seleccionar todo</span>
             </label>
-            <button id="approveSelectedButton" class="btn btn-primary" type="button" disabled>Aprobar seleccionadas</button>
+            <button id="approveSelectedButton" class="btn btn-primary" type="button" disabled><span class="btn-icon" aria-hidden="true">✓</span>Aprobar seleccionadas</button>
           </div>
         </div>
 
@@ -145,11 +144,11 @@
       <section class="panel">
         <div class="panel-header toolbar-header">
           <div>
-            <h2>IPs activas</h2>
-            <p>Listado de IPs actualmente activas en el sistema.</p>
+            <div class="panel-title-row"><span class="panel-icon" aria-hidden="true">▦</span><div><h2>IPs activas</h2>
+            <p>Listado de IPs actualmente activas en el sistema.</p></div></div>
           </div>
           <div class="table-tools">
-            <input id="activeSearch" class="search-input" type="search" placeholder="Buscar por IP, nodo, estado o usuario...">
+            <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input id="activeSearch" class="search-input" type="search" placeholder="Buscar por IP, nodo, estado o usuario..."></div>
           </div>
         </div>
 
@@ -185,7 +184,7 @@
             <p>Registro de todas las solicitudes y cambios de estado.</p>
           </div>
           <div class="table-tools">
-            <input id="historySearch" class="search-input" type="search" placeholder="Buscar por IP, nodo, estado o usuario...">
+            <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input id="historySearch" class="search-input" type="search" placeholder="Buscar por IP, nodo, estado o usuario..."></div>
           </div>
         </div>
 
