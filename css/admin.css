@@ -561,3 +561,229 @@ html[data-theme="dark"] .brand-logo-dark {
     flex-basis: 82px;
   }
 }
+
+
+/* DIRECTO PREVIEW POLISH */
+.brand-logo {
+  width: 118px;
+  height: 54px;
+  flex: 0 0 118px;
+}
+.brand-group { gap: 0; }
+.btn-icon,
+.theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 7px;
+  line-height: 1;
+}
+.theme-icon { margin-right: 6px; font-size: 15px; }
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.panel-icon {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #1267c9;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 5px 14px rgba(18,103,201,.18);
+}
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 13px;
+  z-index: 1;
+  pointer-events: none;
+  font-size: 22px;
+  line-height: 1;
+}
+.search-wrap .search-input { padding-left: 38px; }
+
+html[data-theme="dark"] .topbar {
+  min-height: 88px;
+  padding: 0 32px;
+  background: #061a31;
+  border-bottom-color: #173653;
+  box-shadow: 0 2px 18px rgba(0,0,0,.28);
+}
+html[data-theme="dark"] .brand-logo {
+  width: 118px;
+  height: 54px;
+  flex-basis: 118px;
+}
+html[data-theme="dark"] .brand-divider {
+  height: 34px;
+  margin: 0 18px;
+  background: #38506b;
+}
+html[data-theme="dark"] .brand-title {
+  color: #f4f7fb;
+  font-size: 21px;
+}
+html[data-theme="dark"] .brand-subtitle {
+  color: #d0d9e6;
+}
+html[data-theme="dark"] .system-state strong,
+html[data-theme="dark"] .session-user strong {
+  color: #eef4fb;
+}
+html[data-theme="dark"] .system-state small,
+html[data-theme="dark"] .session-user small {
+  color: #a4b4c9;
+}
+html[data-theme="dark"] .avatar {
+  background: #1267c9;
+  color: #fff;
+}
+html[data-theme="dark"] .btn-secondary {
+  background: #1267c9;
+  border-color: #1d78df;
+}
+html[data-theme="dark"] .btn-secondary:hover {
+  background: #1876dd;
+}
+html[data-theme="dark"] .btn-ghost {
+  background: #122237;
+  border-color: #3b526d;
+  color: #edf3fb;
+}
+html[data-theme="dark"] .theme-toggle {
+  min-height: 38px;
+  background: #102338;
+  border-color: #405a77;
+  color: #f2f6fb;
+}
+html[data-theme="dark"] .page {
+  width: min(1600px, calc(100% - 64px));
+  margin-top: 16px;
+}
+html[data-theme="dark"] .metrics {
+  gap: 14px;
+}
+html[data-theme="dark"] .metric-card {
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #12243a, #102033);
+  border-color: #29415c;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.20);
+}
+html[data-theme="dark"] .metric-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+}
+html[data-theme="dark"] .metric-pending::after { background: #ff9f00; }
+html[data-theme="dark"] .metric-active::after { background: #00d978; }
+html[data-theme="dark"] .metric-expiring::after { background: #ffc400; }
+html[data-theme="dark"] .metric-expired::after { background: #ff4d4d; }
+html[data-theme="dark"] .metric-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: #20334f;
+  color: #fff;
+  font-size: 28px;
+}
+html[data-theme="dark"] .metric-pending .metric-icon { background: #4b402d; color: #fff; }
+html[data-theme="dark"] .metric-active .metric-icon { background: #0d5a48; color: #fff; }
+html[data-theme="dark"] .metric-expiring .metric-icon { background: #4c4027; color: #fff; }
+html[data-theme="dark"] .metric-expired .metric-icon { background: #653342; color: #fff; }
+html[data-theme="dark"] .metric-number {
+  color: #f5f7fb;
+  font-size: 29px;
+}
+html[data-theme="dark"] .metric-label {
+  color: #f3f6fb;
+  font-size: 14px;
+}
+html[data-theme="dark"] .metric-help {
+  color: #aab8ca;
+}
+html[data-theme="dark"] .panel {
+  background: #0d1e31;
+  border-color: #233b55;
+  border-radius: 12px;
+  box-shadow: 0 8px 26px rgba(0,0,0,.18);
+}
+html[data-theme="dark"] .panel-header {
+  min-height: 74px;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #102a46, #0d2035);
+  border-bottom-color: #24405d;
+}
+html[data-theme="dark"] .panel-header h2 {
+  color: #f3f6fb;
+  font-size: 18px;
+}
+html[data-theme="dark"] .panel-header p {
+  color: #aebdd0;
+}
+html[data-theme="dark"] .panel-icon {
+  background: #096bd4;
+  box-shadow: 0 5px 15px rgba(0,105,220,.24);
+}
+html[data-theme="dark"] thead th {
+  height: 38px;
+  background: #122b47;
+  border-bottom-color: #2a4561;
+  color: #e0e8f3;
+}
+html[data-theme="dark"] tbody td {
+  background: #0d1e31;
+  border-bottom-color: #20364e;
+  color: #edf2f8;
+}
+html[data-theme="dark"] tbody tr:hover td {
+  background: #112840;
+}
+html[data-theme="dark"] .table-footer {
+  background: #0d1e31;
+  border-top-color: #20364e;
+  color: #9fb0c5;
+}
+html[data-theme="dark"] .search-wrap .search-input {
+  background: #0a192b;
+  border-color: #45627f;
+  color: #eaf0f7;
+}
+html[data-theme="dark"] .search-wrap .search-input::placeholder {
+  color: #8fa3bb;
+}
+html[data-theme="dark"] .search-icon {
+  color: #d8e4f2;
+}
+html[data-theme="dark"] .select-all-control {
+  color: #d6e0ec;
+}
+html[data-theme="dark"] .btn-primary {
+  background: linear-gradient(135deg, #176fd0, #1556a0);
+}
+html[data-theme="dark"] .btn-success {
+  background: linear-gradient(180deg, #19a963, #087d4c);
+}
+html[data-theme="dark"] .btn-danger {
+  background: linear-gradient(180deg, #f04444, #db3030);
+}
+html[data-theme="dark"] .btn-reject {
+  background: #38281d;
+  border-color: #765035;
+  color: #ffc58f;
+}
