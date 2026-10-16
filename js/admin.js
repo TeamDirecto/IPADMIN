@@ -644,6 +644,9 @@
 
   document.addEventListener("pointerdown", unlockAudio, { once: true });
 
+  // Inicializar tema al cargar la aplicación, antes de validar sesión.
+  initTheme();
+
   if (token) {
     if (role !== "APPROVER" && role !== "SUPERADMIN") {
       setSession("", "", "");
