@@ -467,3 +467,41 @@ html[data-theme="dark"] .node-detail-line { border-top-color:#20364e; }
 html[data-theme="dark"] .node-detail-line code { color:#dce7f3; }
 html[data-theme="dark"] .node-detail-line-stack code { background:#101f32;color:#dce7f3; }
 html[data-theme="dark"] .node-detail-result.na { background:#253246;color:#b3c0d0; }
+
+
+/* Dark mode: incidents must use dark cards, not the light fallback surface. */
+html[data-theme="dark"] .incident-item,
+html[data-theme="dark"] .incident-card,
+html[data-theme="dark"] .incident-row,
+html[data-theme="dark"] .incident-list > * {
+  background:#101f32 !important;
+  border-color:#29415c !important;
+  color:#e7edf7 !important;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+}
+html[data-theme="dark"] .incident-item:hover,
+html[data-theme="dark"] .incident-card:hover,
+html[data-theme="dark"] .incident-row:hover {
+  background:#162b42 !important;
+}
+html[data-theme="dark"] .incident-item strong,
+html[data-theme="dark"] .incident-card strong,
+html[data-theme="dark"] .incident-row strong,
+html[data-theme="dark"] .incident-node,
+html[data-theme="dark"] .incident-title {
+  color:#edf3fa !important;
+}
+html[data-theme="dark"] .incident-item span,
+html[data-theme="dark"] .incident-card span,
+html[data-theme="dark"] .incident-row span,
+html[data-theme="dark"] .incident-meta,
+html[data-theme="dark"] .incident-details {
+  color:#9fb0c5 !important;
+}
+html[data-theme="dark"] .incident-item .health-badge,
+html[data-theme="dark"] .incident-card .health-badge,
+html[data-theme="dark"] .incident-row .health-badge {
+  background:#3d2024;
+  color:#ff9a9a;
+  border-color:#75404a;
+}
