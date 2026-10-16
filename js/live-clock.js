@@ -1,30 +1,44 @@
 (() => {
   "use strict";
 
-  const clock = document.getElementById("lastUpdateText");
+  const clock = document.getElementById("flipClock");
   const systemDot = document.getElementById("systemDot");
   const systemStateText = document.getElementById("systemStateText");
-
   if (!clock) return;
 
-  const formatter = new Intl.DateTimeFormat("es-MX", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true
-  });
+  const digits = [...clock.querySelectorAll(".flip-digit")];
+  const ampm = clock.querySelector(".flip-ampm");
+
+  function setDigit(el, value) {
+    if (el && el.textContent !== value) {
+      el.classList.remove("flip");
+      void el.offsetWidth;
+      el.textContent = value;
+      el.dataset.digit = value;
+      el.classList.add("flip");
+    }
+  }
 
   function tick() {
     const online =
       (!systemDot || systemDot.classList.contains("online")) &&
       (!systemStateText || systemStateText.textContent.trim() === "Sistema en línea");
 
-    // Si el backend está reportado como offline, conservamos el mensaje de error
-    // que admin.js coloca en este mismo elemento.
     if (!online) return;
 
-    clock.textContent = formatter.format(new Date());
-    clock.setAttribute("aria-label", "Hora local en tiempo real");
+    const now = new Date();
+    let hours = now.getHours();
+    const meridiem = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    const value = String(hours).padStart(2, "0") +
+      String(now.getMinutes()).padStart(2, "0") +
+      String(now.getSeconds()).padStart(2, "0");
+
+    digits.forEach((el, i) => setDigit(el, value[i]));
+    if (ampm) ampm.textContent = meridiem;
+
+    clock.setAttribute("aria-label", "Hora local " + value.slice(0,2) + ":" + value.slice(2,4) + ":" + value.slice(4,6) + " " + meridiem);
     clock.title = "Hora local en tiempo real";
   }
 
