@@ -536,3 +536,28 @@ html[data-theme="dark"] .theme-toggle:hover {
   }
 }
 
+
+
+/* Directo brand logo */
+.brand-logo {
+  width: 94px;
+  height: 58px;
+  flex: 0 0 94px;
+  object-fit: contain;
+  display: block;
+}
+.brand-logo-dark {
+  display: none;
+}
+html[data-theme="dark"] .brand-logo-light {
+  display: none;
+}
+html[data-theme="dark"] .brand-logo-dark {
+  display: block;
+}
+@media (max-width: 900px) {
+  .brand-logo {
+    width: 82px;
+    flex-basis: 82px;
+  }
+}
