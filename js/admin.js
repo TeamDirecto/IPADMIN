@@ -18,6 +18,53 @@
 
   const $ = (id) => document.getElementById(id);
 
+  const THEME_KEY = "ipadmin_theme";
+
+  function getPreferredTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "dark" || saved === "light") return saved;
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  function applyTheme(theme) {
+    const normalized = theme === "dark" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", normalized);
+    try {
+      localStorage.setItem(THEME_KEY, normalized);
+    } catch (_) {}
+
+    const button = $("themeToggle");
+    if (button) {
+      button.textContent = normalized === "dark" ? "☀️ Claro" : "🌙 Oscuro";
+      button.setAttribute(
+        "aria-label",
+        normalized === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
+      );
+      button.title =
+        normalized === "dark"
+          ? "Cambiar a modo claro"
+          : "Cambiar a modo oscuro";
+    }
+  }
+
+  function initTheme() {
+    applyTheme(getPreferredTheme());
+
+    const button = $("themeToggle");
+    if (button) {
+      button.addEventListener("click", () => {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light"
+            : "dark";
+        applyTheme(next);
+      });
+    }
+  }
+
   const loginView = $("loginView");
   const appView = $("appView");
   const loginForm = $("loginForm");
@@ -174,7 +221,9 @@
     token = newToken || "";
     username = newUser || "";
     role = String(newRole || "").toUpperCase();
-    if (token) {
+    initTheme();
+
+  if (token) {
       sessionStorage.setItem("ipadmin_token", token);
       sessionStorage.setItem("ipadmin_user", username);
       sessionStorage.setItem("ipadmin_role", role);
