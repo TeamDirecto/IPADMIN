@@ -377,3 +377,93 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Dark mode: node health table must keep the same dark surface when expanded. */
+html[data-theme="dark"] .health-chip {
+  background: #122237;
+  border-color: #405a77;
+  color: #c9d7e7;
+}
+html[data-theme="dark"] .health-chip strong { color: #edf3fa; }
+html[data-theme="dark"] .health-chip.synced {
+  background: #173a2b;
+  border-color: #276c50;
+  color: #76e1ad;
+}
+html[data-theme="dark"] .health-chip.drift {
+  background: #3d2024;
+  border-color: #75404a;
+  color: #ff9a9a;
+}
+html[data-theme="dark"] .health-chip.stale {
+  background: #3a3018;
+  border-color: #765b2b;
+  color: #ffd778;
+}
+html[data-theme="dark"] .health-count { color: #cfe0f2; }
+html[data-theme="dark"] .health-count.match,
+html[data-theme="dark"] .health-hash.ok { color: #76e1ad; }
+html[data-theme="dark"] .health-count.mismatch,
+html[data-theme="dark"] .health-hash.diff,
+html[data-theme="dark"] .health-error { color: #ff8f8f; }
+html[data-theme="dark"] .health-badge.synced { color:#76e1ad;background:#173a2b; }
+html[data-theme="dark"] .health-badge.drift { color:#ff9a9a;background:#3d2024; }
+html[data-theme="dark"] .health-badge.stale { color:#ffd778;background:#3a3018; }
+html[data-theme="dark"] .health-badge.unknown { color:#b3c0d0;background:#253246; }
+html[data-theme="dark"] .health-version { color:#cfe0f2; }
+html[data-theme="dark"] .health-sha,
+html[data-theme="dark"] .health-age,
+html[data-theme="dark"] .health-hash.na { color:#8fa2b8; }
+html[data-theme="dark"] .health-last-seen { color:#c3d2e2; }
+
+/* Override the light row backgrounds with dark surfaces. */
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-row-drift td {
+  background:#101d2d !important;
+  color:#e7edf7;
+}
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-row-stale td {
+  background:#101d2d !important;
+  color:#e7edf7;
+}
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-clickable:hover td,
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-row-drift:hover td,
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-row-stale:hover td {
+  background:#172b42 !important;
+}
+html[data-theme="dark"] #nodeHealthPanel tbody tr.health-clickable:focus td {
+  outline-color:#587da8;
+}
+html[data-theme="dark"] .node-detail-overlay {
+  background:rgba(2,10,20,.70);
+}
+html[data-theme="dark"] .node-detail-drawer {
+  background:#0b1828;
+  border-left-color:#29415c;
+  box-shadow:-18px 0 48px rgba(0,0,0,.40);
+}
+html[data-theme="dark"] .node-detail-card,
+html[data-theme="dark"] .node-detail-section {
+  background:#0d1e31;
+  border-color:#29415c;
+}
+html[data-theme="dark"] .node-detail-header small,
+html[data-theme="dark"] .node-detail-card > span,
+html[data-theme="dark"] .node-detail-card small,
+html[data-theme="dark"] .node-detail-line > span {
+  color:#9fb0c5;
+}
+html[data-theme="dark"] .node-detail-header h2,
+html[data-theme="dark"] .node-detail-card strong,
+html[data-theme="dark"] .node-detail-section h3 {
+  color:#edf3fa;
+}
+html[data-theme="dark"] .node-detail-close {
+  background:#122237;
+  border-color:#405a77;
+  color:#edf3fa;
+}
+html[data-theme="dark"] .node-detail-line { border-top-color:#20364e; }
+html[data-theme="dark"] .node-detail-line code { color:#dce7f3; }
+html[data-theme="dark"] .node-detail-line-stack code { background:#101f32;color:#dce7f3; }
+html[data-theme="dark"] .node-detail-result.na { background:#253246;color:#b3c0d0; }
