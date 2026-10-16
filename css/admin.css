@@ -787,3 +787,180 @@ html[data-theme="dark"] .btn-reject {
   border-color: #765035;
   color: #ffc58f;
 }
+
+
+/* FINAL UI ALIGNMENT */
+.brand-logo,
+.brand-logo-light,
+.brand-logo-dark { display: none !important; }
+
+.brand-group { gap: 0; }
+.brand-title { color: #f3f6fb; }
+.brand-divider { background: #38506b; }
+.brand-subtitle { color: #b8c7da; }
+
+.metric-card {
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border-width: 1px;
+  border-bottom-width: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.20);
+}
+.metric-card::after { display: none !important; }
+.metric-pending { border-bottom-color: #ff9f00 !important; }
+.metric-active { border-bottom-color: #00d978 !important; }
+.metric-expiring { border-bottom-color: #ffc400 !important; }
+.metric-expired { border-bottom-color: #ff4d4d !important; }
+
+.metric-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  font-size: 28px;
+}
+.metric-pending .metric-icon { background: #4b402d; color: #fff; }
+.metric-active .metric-icon { background: #0d5a48; color: #fff; }
+.metric-expiring .metric-icon { background: #4c4027; color: #fff; }
+.metric-expired .metric-icon { background: #653342; color: #fff; }
+
+.theme-switch {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 11px;
+  border: 1px solid #405a77;
+  border-radius: 999px;
+  background: #102338;
+  color: #f2f6fb;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.theme-switch-track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  flex: 0 0 38px;
+  border-radius: 999px;
+  background: #31506f;
+  transition: background .18s ease;
+}
+.theme-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35);
+  transition: transform .18s ease;
+}
+.theme-switch[aria-checked="true"] .theme-switch-track {
+  background: #1876dd;
+}
+.theme-switch[aria-checked="true"] .theme-switch-thumb {
+  transform: translateX(16px);
+}
+.theme-switch:hover { border-color: #6c8bab; }
+.theme-switch:focus-visible {
+  outline: 2px solid #79a9ff;
+  outline-offset: 2px;
+}
+
+/* Make both themes use the same dashboard geometry and component treatment. */
+html:not([data-theme="dark"]) body {
+  background: linear-gradient(180deg, #f1f5fa 0, #e8eef5 260px);
+}
+html:not([data-theme="dark"]) .topbar {
+  min-height: 88px;
+  padding: 0 32px;
+  background: #ffffff;
+  border-bottom-color: #d4dfeb;
+  box-shadow: 0 2px 18px rgba(28,52,91,.10);
+}
+html:not([data-theme="dark"]) .brand-title { color: #102d61; }
+html:not([data-theme="dark"]) .brand-divider { background: #cbd7e5; }
+html:not([data-theme="dark"]) .brand-subtitle { color: #526985; }
+html:not([data-theme="dark"]) .system-state { border-right-color: #d4dfeb; }
+html:not([data-theme="dark"]) .system-state strong,
+html:not([data-theme="dark"]) .session-user strong { color: #203b5e; }
+html:not([data-theme="dark"]) .system-state small,
+html:not([data-theme="dark"]) .session-user small { color: #71829a; }
+html:not([data-theme="dark"]) .avatar {
+  background: #1267c9;
+  color: #fff;
+}
+html:not([data-theme="dark"]) .metric-card {
+  background: linear-gradient(145deg, #ffffff, #eef3f8);
+  border-color: #c9d6e5;
+  box-shadow: 0 8px 24px rgba(28,52,91,.10);
+}
+html:not([data-theme="dark"]) .metric-number { color: #15365f; }
+html:not([data-theme="dark"]) .metric-label { color: #203b5e; }
+html:not([data-theme="dark"]) .metric-help { color: #71829a; }
+html:not([data-theme="dark"]) .metric-icon { color: #fff; }
+html:not([data-theme="dark"]) .panel {
+  background: #fff;
+  border-color: #c9d6e5;
+  box-shadow: 0 8px 26px rgba(28,52,91,.10);
+}
+html:not([data-theme="dark"]) .panel-header {
+  min-height: 74px;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #edf5fd, #e5eff9);
+  border-bottom-color: #c9d8e8;
+}
+html:not([data-theme="dark"]) .panel-header h2 { color: #15365f; }
+html:not([data-theme="dark"]) .panel-header p { color: #657b96; }
+html:not([data-theme="dark"]) .panel-icon {
+  background: #096bd4;
+  color: #fff;
+}
+html:not([data-theme="dark"]) thead th {
+  background: #eaf3fc;
+  border-bottom-color: #cad9e8;
+  color: #294563;
+}
+html:not([data-theme="dark"]) tbody td {
+  background: #fff;
+  border-bottom-color: #dce5ef;
+  color: #263f5f;
+}
+html:not([data-theme="dark"]) tbody tr:hover td { background: #f4f8fc; }
+html:not([data-theme="dark"]) .table-footer {
+  background: #fff;
+  border-top-color: #dce5ef;
+  color: #70829a;
+}
+html:not([data-theme="dark"]) .search-wrap .search-input {
+  background: #f8fbfe;
+  border-color: #aebfd2;
+  color: #203b5e;
+}
+html:not([data-theme="dark"]) .search-wrap .search-input::placeholder { color: #73869d; }
+html:not([data-theme="dark"]) .search-icon { color: #536b87; }
+html:not([data-theme="dark"]) .select-all-control { color: #405977; }
+html:not([data-theme="dark"]) .theme-switch {
+  background: #edf3f9;
+  border-color: #9fb4cb;
+  color: #203b5e;
+}
+html:not([data-theme="dark"]) .theme-switch-track { background: #9fb1c5; }
+html:not([data-theme="dark"]) .theme-switch[aria-checked="false"] .theme-switch-thumb {
+  background: #fff;
+}
+html:not([data-theme="dark"]) .btn-ghost {
+  background: #fff;
+  border-color: #c4d2e0;
+  color: #36516f;
+}
+
+/* The metric accent is always anchored to the bottom edge. */
+.metrics .metric-card {
+  border-bottom-style: solid !important;
+  border-bottom-width: 4px !important;
+}
