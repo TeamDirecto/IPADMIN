@@ -13,6 +13,34 @@
     return;
   }
 
+  const THEME_KEY = "ipadmin_theme";
+
+  function getPreferredTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "dark" || saved === "light") return saved;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function applyTheme(theme) {
+    const normalized = theme === "dark" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", normalized);
+    try { localStorage.setItem(THEME_KEY, normalized); } catch (_) {}
+    const button = document.getElementById("themeToggle");
+    if (button) {
+      const label = button.querySelector(".theme-label");
+      if (label) label.textContent = normalized === "dark" ? "Oscuro" : "Claro";
+      button.setAttribute("aria-checked", normalized === "dark" ? "true" : "false");
+    }
+  }
+
+  function initTheme() {
+    applyTheme(getPreferredTheme());
+    const button = document.getElementById("themeToggle");
+    if (button) button.addEventListener("click", () => {
+      applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  }
+
   const appView = document.getElementById("appView");
   const sessionUser = document.getElementById("sessionUser");
   const sessionRole = document.getElementById("sessionRole");
@@ -22,6 +50,7 @@
 
   if (sessionUser) sessionUser.textContent = username;
   if (sessionRole) sessionRole.textContent = "Superadministrador";
+  initTheme();
   if (appView) appView.hidden = false;
 
   function setupCollapsibles() {
