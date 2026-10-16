@@ -41,7 +41,15 @@
           <span id="systemDot" class="status-dot online"></span>
           <div>
             <strong id="systemStateText">Sistema en línea</strong>
-            <small id="lastUpdateText">Sincronizando...</small>
+            <div id="flipClock" class="flip-clock" aria-label="Hora local en tiempo real">
+              <span class="flip-digit" data-digit="0">0</span><span class="flip-digit" data-digit="0">0</span>
+              <span class="flip-sep">:</span>
+              <span class="flip-digit" data-digit="0">0</span><span class="flip-digit" data-digit="0">0</span>
+              <span class="flip-sep">:</span>
+              <span class="flip-digit" data-digit="0">0</span><span class="flip-digit" data-digit="0">0</span>
+              <span class="flip-ampm">--</span>
+            </div>
+            <small id="lastUpdateText" hidden>Sincronizando...</small>
           </div>
         </div>
 
@@ -215,7 +223,7 @@
 
   <script src="js/admin.js?v=9"></script>
   <script src="js/crosscheck.js?v=2"></script>
-  <script src="js/live-clock.js?v=1"></script>
+  <script src="js/live-clock.js?v=2"></script>
   <script src="js/metric-details.js?v=2"></script>
 </body>
 </html>
