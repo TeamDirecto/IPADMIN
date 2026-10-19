@@ -38,6 +38,11 @@ class VerifierTests(unittest.TestCase):
             '-A INPUT -m comment --comment "IPMANAGER ENTRY" -j IPMANAGER-IN', ""), BASE)
         self.assertEqual(r["status"], "DRIFT")
 
+    def test_absent_but_jump_missing_is_drift(self):
+        broken = BASE.replace('-A INPUT -m comment --comment "IPMANAGER ENTRY" -j IPMANAGER-IN', "")
+        r = mod.inspect("192.0.2.1", broken, BASE)
+        self.assertEqual(r["status"], "DRIFT")
+
     def test_no_subnet_false_positive(self):
         r = mod.inspect("192.0.2.8", BASE, BASE)
         self.assertEqual(r["status"], "ABSENT")
