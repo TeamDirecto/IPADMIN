@@ -106,7 +106,7 @@ def inspect(ip, runtime_text, persisted_text):
     match = runtime_specs == persisted_specs
     healthy_structure = (runtime["chain_present"] and persisted["chain_present"]
                          and runtime["jump_count"] == 1 and persisted["jump_count"] == 1)
-    if not runtime_specs and not persisted_specs:
+    if not runtime_specs and not persisted_specs and healthy_structure:
         status = "ABSENT"
     elif match and healthy_structure:
         status = "CONSISTENT"
